@@ -51,19 +51,16 @@ public class MessageFormApp extends javax.swing.JFrame {
     }
 
     private void print(String filename){
-        saveFile(filename);
-
         try{
-            File file = new File(FormGeneratorApp.home_dir, filename + ".fga");
+            saveFile(filename);
+            File file = FileManager.getFile(new File(FormGeneratorApp.home_dir + "\\" + "Message"), filename);
             if(file.exists()){
-                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 
                 MessagePrintApp print_screen = new MessagePrintApp();
                 print_screen.setLocationRelativeTo(this);
                 print_screen.setVisible(true);
 
-                ArrayList<Message> messages = (ArrayList<Message>)ois.readObject();
-                ois.close();
+                ArrayList<Message> messages = loadFile(filename);
 
                 print_screen.print(messages);
             }
@@ -90,7 +87,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
             if(filename != null){
                 if(filename.isEmpty()){
-                    saveFile("Messages " + CalendarUtilities.getDateAndTime()); //temp
+                    saveFile(CalendarUtilities.getDateAndTime());
                 }
                 else{
                     saveFile(filename);
@@ -283,7 +280,7 @@ public class MessageFormApp extends javax.swing.JFrame {
         FileManager.saveFile(FormGeneratorApp.login, getFile(filename), messages);
     }
 
-    private void loadFile(String filename){
+    private ArrayList<Message> loadFile(String filename){
         ArrayList<Message> messages;
         
         if((messages = (ArrayList<Message>)(FileManager.loadFile(FormGeneratorApp.login, getFile(filename), ArrayList.class))) != null){
@@ -297,6 +294,7 @@ public class MessageFormApp extends javax.swing.JFrame {
                 loadNewForm();
             }
         }
+        return messages;
     }
 
     /** This method is called from within the constructor to
@@ -818,7 +816,7 @@ public class MessageFormApp extends javax.swing.JFrame {
             case JOptionPane.CANCEL_OPTION:
                 break;
             case JOptionPane.YES_OPTION:
-                saveFile("Messages " + CalendarUtilities.getDateAndTime()); //temp
+                saveFile(CalendarUtilities.getDateAndTime()); //temp
             case JOptionPane.NO_OPTION:
                 dispose();
                 FormGeneratorApp main_menu = new FormGeneratorApp();
@@ -832,7 +830,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         if(filename != null){
             if(filename.isEmpty()){
-                saveFile("Messages " + CalendarUtilities.getDateAndTime());
+                saveFile(CalendarUtilities.getDateAndTime());
             }
             else{
                 saveFile(filename);
@@ -894,7 +892,7 @@ public class MessageFormApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        print("Messages " + CalendarUtilities.getDateAndTime()); //temp
+        print(CalendarUtilities.getDateAndTime()); //temp
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
