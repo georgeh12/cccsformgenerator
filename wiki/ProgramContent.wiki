@@ -1,4 +1,4 @@
-#summary Program description
+#summary A description of the program's features and goals.
 #labels Featured,Phase-Requirements
 
 = Introduction =
