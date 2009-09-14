@@ -1,5 +1,12 @@
-remember me?
-add 0's in front of dates and time for saved class files
-add a filechooser to open/save
-add a delete all saved button to saved class files
-make sure user can't enter _default or illegal microsoft characters as a username value
+-remember me?
+-add 0's in front of dates and time for saved class files
+-add a filechooser to open/save
+-add a delete all saved button to saved class files
+-make sure user can't enter _default or illegal microsoft characters as a username value
+-Load last created doc if no name is entered for messages
+-add 0's to end of phone number if not enough info is given
+-print out messages in date order
+-make password *
+-don't make fields go blank on daily log if you switch between voucher and cert
+-change voucher #s and cert #'s to add 0's to front if < 9 or 16
+-for daily log, if NO ID is loaded should load blank
