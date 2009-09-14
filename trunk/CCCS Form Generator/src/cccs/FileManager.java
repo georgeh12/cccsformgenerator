@@ -111,7 +111,7 @@ public class FileManager {
         return getFile(FormGeneratorApp.home_dir, filename).exists();
     }
 
-    private static File getFile(File dir, String filename){
+    public static File getFile(File dir, String filename){
         if(dir.getName().length() > 1){
             return new File(dir, filename + ".fga");
         }
