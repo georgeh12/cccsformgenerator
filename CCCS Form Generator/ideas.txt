@@ -1,0 +1,5 @@
+remember me?
+add 0's in front of dates and time for saved class files
+add a filechooser to open/load
+add a delete all saved button to saved class files
+make sure user can't enter _default or illegal microsoft characters as a username value

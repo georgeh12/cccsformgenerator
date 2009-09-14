@@ -1,0 +1,558 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*
+ * FaxFormApp.java
+ *
+ * Created on Aug 18, 2009, 3:35:40 PM
+ * @author George Hardigg
+ */
+
+package cccs;
+import javax.swing.*;
+import java.io.*;
+import java.awt.*;
+import java.util.*;
+
+/**
+ *
+ * @author ghardigg
+ */
+public class FaxFormApp extends javax.swing.JFrame {
+
+    /** Creates new form FaxFormApp */
+    public FaxFormApp() {
+        initComponents();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        jTextField1.grabFocus();
+
+        jTextField2.setBackground(Color.WHITE);
+        jTextField5.setBackground(Color.WHITE);
+        jTextField6.setBackground(Color.WHITE);
+        jTextField5.setText(FormGeneratorApp.display_name);
+        
+        setTime();
+    }
+
+    private void setTime(){
+        Calendar now = Calendar.getInstance();
+        String dow = "";
+
+        switch(now.get(Calendar.DAY_OF_WEEK)){
+            case Calendar.MONDAY:
+                dow = "Mon, ";
+                break;
+            case Calendar.TUESDAY:
+                dow = "Tue, ";
+                break;
+            case Calendar.WEDNESDAY:
+                dow = "Wed, ";
+                break;
+            case Calendar.THURSDAY:
+                dow = "Thu, ";
+                break;
+            case Calendar.FRIDAY:
+                dow = "Fri, ";
+                break;
+            case Calendar.SATURDAY:
+                dow = "Sat, ";
+                break;
+            case Calendar.SUNDAY:
+                dow = "Sun, ";
+        }
+
+        jTextField6.setText(dow + now.get(Calendar.MONTH) + "/" +
+                now.get(Calendar.DATE) + "  " +
+                now.get(Calendar.HOUR) + ":" +
+                (now.get(Calendar.MINUTE) < 10 ? "0" : "") +
+                now.get(Calendar.MINUTE) +
+                (now.get(Calendar.AM_PM) == Calendar.AM ? " AM" : " PM"));
+    }
+
+    private void print(){
+        saveFile("Fax " + CalendarUtilities.getDateAndTime());
+        loadFile("Fax " + CalendarUtilities.getDateAndTime());
+
+        preparePrint(false);
+
+        PrintUtilities.printComponent(jPanel1);
+
+        preparePrint(true);
+    }
+
+    private void preparePrint(boolean editable){
+        jTextArea2.setEditable(editable);
+        jTextField1.setEditable(editable);
+        jTextField3.setEditable(editable);
+        jTextField4.setEditable(editable);
+        jTextField5.setEditable(editable);
+        
+        if(!editable){
+            jTextArea2.setBackground(Color.WHITE);
+            jTextField1.setBackground(Color.WHITE);
+            jTextField3.setBackground(Color.WHITE);
+            jTextField4.setBackground(Color.WHITE);
+            jTextField5.setBackground(Color.WHITE);
+
+            jTextArea1.setCaretColor(Color.WHITE);
+            jTextField1.setCaretColor(Color.WHITE);
+            jTextField3.setCaretColor(Color.WHITE);
+            jTextField4.setCaretColor(Color.WHITE);
+            jTextField5.setCaretColor(Color.WHITE);
+        }
+        else{
+            jTextArea1.setCaretColor(Color.BLACK);
+            jTextField1.setCaretColor(Color.BLACK);
+            jTextField3.setCaretColor(Color.BLACK);
+            jTextField4.setCaretColor(Color.BLACK);
+            jTextField5.setCaretColor(Color.BLACK);
+        }
+
+        validate();
+    }
+
+    private FaxForm save(){
+        try{
+            FaxForm data = new FaxForm(jTextField1.getText(), jTextField2.getText(),
+                    new PhoneNumber(PhoneNumber.PhoneType.Fax,
+                                    PhoneNumber.format(jTextField3.getText())),
+                    Integer.parseInt(jTextField4.getText()), jTextField5.getText(),
+                    new StringBuffer(jTextArea1.getText()));
+            
+            return data;
+        }
+        catch(NumberFormatException e){
+            e.printStackTrace();
+        }
+        catch(ClassCastException e){
+            e.printStackTrace();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private void load(FaxForm data){
+        jTextField1.setText(data.get_to());
+        jTextField2.setText(data.get_from());
+        jTextField3.setText(data.get_fax());
+        jTextField4.setText(data.get_pages());
+        jTextField5.setText(data.get_sent_by());
+    }
+
+    private File getFile(String filename){
+        return new File("Fax\\" + filename);
+    }
+
+    private void saveFile(String filename){
+        FileManager.saveFile(FormGeneratorApp.login, getFile(filename), save());
+    }
+
+    private void loadFile(String filename){
+        FaxForm fax_form;
+        if((fax_form = (FaxForm)FileManager.loadFile(FormGeneratorApp.login, getFile(filename), FaxForm.class)) != null){
+            load(fax_form);
+        }
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jTextField6 = new javax.swing.JTextField();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("CCCS Fax Form");
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(FaxFormApp.class);
+        setBackground(resourceMap.getColor("background")); // NOI18N
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setName("jPanel1"); // NOI18N
+        jPanel1.setNextFocusableComponent(jTextField1);
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel1.setText("757 Frederick Road");
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel2.setText("Baltimore, Maryland 21228");
+        jLabel2.setName("jLabel2"); // NOI18N
+
+        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel3.setText("800-571-2227 Phone");
+        jLabel3.setName("jLabel3"); // NOI18N
+
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel4.setText("410-747-2387 Fax");
+        jLabel4.setName("jLabel4"); // NOI18N
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
+        jTextArea1.setColumns(10);
+        jTextArea1.setEditable(false);
+        jTextArea1.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 18));
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea1.setRows(2);
+        jTextArea1.setText(" Consumer Credit\n Counseling Service\n of MD & DE");
+        jTextArea1.setName("jTextArea1"); // NOI18N
+        jTextArea1.setNextFocusableComponent(jTextField1);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel5.setFont(new java.awt.Font("Microsoft Sans Serif", 1, 60));
+        jLabel5.setText("Fax");
+        jLabel5.setName("jLabel5"); // NOI18N
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel6.setText("To:");
+        jLabel6.setName("jLabel6"); // NOI18N
+
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField1.setBorder(new BottomBorder(Color.BLACK));
+        jTextField1.setName("jTextField1"); // NOI18N
+        jTextField1.setNextFocusableComponent(jTextField3);
+
+        jTextField2.setEditable(false);
+        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField2.setText("CCCS of MD & DE");
+        jTextField2.setBorder(new BottomBorder(Color.BLACK));
+        jTextField2.setName("jTextField2"); // NOI18N
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel7.setText("From:");
+        jLabel7.setName("jLabel7"); // NOI18N
+
+        jTextField4.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField4.setText("1");
+        jTextField4.setBorder(new BottomBorder(Color.BLACK));
+        jTextField4.setName("jTextField4"); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel8.setText("Pages:");
+        jLabel8.setName("jLabel8"); // NOI18N
+
+        jTextField3.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField3.setBorder(new BottomBorder(Color.BLACK));
+        jTextField3.setName("jTextField3"); // NOI18N
+        jTextField3.setNextFocusableComponent(jTextArea2);
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel9.setText("Fax:");
+        jLabel9.setName("jLabel9"); // NOI18N
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel10.setText("Sent by:");
+        jLabel10.setName("jLabel10"); // NOI18N
+
+        jTextField5.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField5.setBorder(new BottomBorder(Color.BLACK));
+        jTextField5.setName("jTextField5"); // NOI18N
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel11.setText("Date:");
+        jLabel11.setName("jLabel11"); // NOI18N
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel12.setText("Message:");
+        jLabel12.setName("jLabel12"); // NOI18N
+
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        jTextArea2.setColumns(20);
+        jTextArea2.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextArea2.setLineWrap(true);
+        jTextArea2.setRows(5);
+        jTextArea2.setText("Online Bankruptcy Education Certificate");
+        jTextArea2.setWrapStyleWord(true);
+        jTextArea2.setName("jTextArea2"); // NOI18N
+        jScrollPane2.setViewportView(jTextArea2);
+
+        jTextField6.setEditable(false);
+        jTextField6.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField6.setBorder(new BottomBorder(Color.BLACK));
+        jTextField6.setName("jTextField6"); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel10)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel6))
+                                        .addGap(4, 4, 4)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextField1)
+                                            .addComponent(jTextField3)
+                                            .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)))
+                                    .addComponent(jLabel12)))
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addGap(58, 58, 58)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))))
+                .addGap(70, 70, 70))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel5))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel12))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+        );
+
+        jMenuBar1.setName("jMenuBar1"); // NOI18N
+
+        jMenu1.setText("Print");
+        jMenu1.setName("jMenu1"); // NOI18N
+        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu1MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu1);
+
+        jMenu4.setText("Save");
+        jMenu4.setName("jMenu4"); // NOI18N
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu4MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu4);
+
+        jMenu5.setText("Open");
+        jMenu5.setName("jMenu5"); // NOI18N
+        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu5MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu5);
+
+        jMenu3.setText("Back");
+        jMenu3.setName("jMenu3"); // NOI18N
+        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu3MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu3);
+
+        setJMenuBar(jMenuBar1);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+        print();
+    }//GEN-LAST:event_jMenu1MouseClicked
+
+    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
+        saveFile("Fax " + CalendarUtilities.getDateAndTime());
+        dispose();
+        FormGeneratorApp main_menu = new FormGeneratorApp();
+        main_menu.setLocationRelativeTo(this);
+        main_menu.setVisible(true);
+    }//GEN-LAST:event_jMenu3MouseClicked
+
+    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
+        String filename = JOptionPane.showInputDialog(this, "Enter a filename", "Save Fax Form", JOptionPane.OK_CANCEL_OPTION);
+
+        if(filename != null){
+            if(filename.isEmpty()){
+                saveFile("Fax " + CalendarUtilities.getDateAndTime());
+            }
+            else{
+                saveFile(filename);
+            }
+        }
+    }//GEN-LAST:event_jMenu4MouseClicked
+
+    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
+        String filename = "";
+        while(true){
+            if((filename = JOptionPane.showInputDialog(this, "Enter a filename", "Load Fax Form", JOptionPane.OK_CANCEL_OPTION)) != null){
+                if(!filename.isEmpty()){
+                    if(FileManager.fileExists(filename)){
+                        loadFile(filename);
+                    }
+                }
+            }
+            else{
+                break;
+            }
+        }
+    }//GEN-LAST:event_jMenu5MouseClicked
+
+    /**
+    * @param args the command line arguments
+    */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new FaxFormApp().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    // End of variables declaration//GEN-END:variables
+
+}
