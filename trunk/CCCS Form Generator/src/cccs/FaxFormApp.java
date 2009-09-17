@@ -38,43 +38,13 @@ public class FaxFormApp extends javax.swing.JFrame {
     }
 
     private void setTime(){
-        Calendar now = Calendar.getInstance();
-        String dow = "";
-
-        switch(now.get(Calendar.DAY_OF_WEEK)){
-            case Calendar.MONDAY:
-                dow = "Mon, ";
-                break;
-            case Calendar.TUESDAY:
-                dow = "Tue, ";
-                break;
-            case Calendar.WEDNESDAY:
-                dow = "Wed, ";
-                break;
-            case Calendar.THURSDAY:
-                dow = "Thu, ";
-                break;
-            case Calendar.FRIDAY:
-                dow = "Fri, ";
-                break;
-            case Calendar.SATURDAY:
-                dow = "Sat, ";
-                break;
-            case Calendar.SUNDAY:
-                dow = "Sun, ";
-        }
-
-        jTextField6.setText(dow + now.get(Calendar.MONTH) + "/" +
-                now.get(Calendar.DATE) + "  " +
-                now.get(Calendar.HOUR) + ":" +
-                (now.get(Calendar.MINUTE) < 10 ? "0" : "") +
-                now.get(Calendar.MINUTE) +
-                (now.get(Calendar.AM_PM) == Calendar.AM ? " AM" : " PM"));
+        jTextField6.setText(CalendarUtilities.formatDay() + ", " +
+                CalendarUtilities.formatDate() + " " + CalendarUtilities.formatTime());
     }
 
     private void print(){
-        saveFile("Fax " + CalendarUtilities.getDateAndTime());
-        loadFile("Fax " + CalendarUtilities.getDateAndTime());
+        saveFile("Fax " + CalendarUtilities.getFFDateAndTime());
+        loadFile("Fax " + CalendarUtilities.getFFDateAndTime());
 
         preparePrint(false);
 
@@ -477,7 +447,7 @@ public class FaxFormApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1MouseClicked
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-        saveFile("Fax " + CalendarUtilities.getDateAndTime());
+        saveFile("Fax " + CalendarUtilities.getFFDateAndTime());
         dispose();
         FormGeneratorApp main_menu = new FormGeneratorApp();
         main_menu.setLocationRelativeTo(this);
@@ -489,7 +459,7 @@ public class FaxFormApp extends javax.swing.JFrame {
 
         if(filename != null){
             if(filename.isEmpty()){
-                saveFile("Fax " + CalendarUtilities.getDateAndTime());
+                saveFile("Fax " + CalendarUtilities.getFFDateAndTime());
             }
             else{
                 saveFile(filename);

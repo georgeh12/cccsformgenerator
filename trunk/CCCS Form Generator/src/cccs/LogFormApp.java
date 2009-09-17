@@ -38,7 +38,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         
         daily_log = DailyLogManager.loadFile(calendar);
 
-        setTitle(CalendarUtilities.getYearAndDate(calendar));
+        setTitle(CalendarUtilities.getFFYearAndDate(calendar));
         load();
     }
 
