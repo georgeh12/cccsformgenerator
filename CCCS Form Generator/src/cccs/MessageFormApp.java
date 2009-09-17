@@ -87,7 +87,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
             if(filename != null){
                 if(filename.isEmpty()){
-                    saveFile(CalendarUtilities.getDateAndTime());
+                    saveFile(CalendarUtilities.getFFDateAndTime());
                 }
                 else{
                     saveFile(filename);
@@ -816,7 +816,7 @@ public class MessageFormApp extends javax.swing.JFrame {
             case JOptionPane.CANCEL_OPTION:
                 break;
             case JOptionPane.YES_OPTION:
-                saveFile(CalendarUtilities.getDateAndTime()); //temp
+                saveFile(CalendarUtilities.getFFDateAndTime()); //temp
             case JOptionPane.NO_OPTION:
                 dispose();
                 FormGeneratorApp main_menu = new FormGeneratorApp();
@@ -830,7 +830,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         if(filename != null){
             if(filename.isEmpty()){
-                saveFile(CalendarUtilities.getDateAndTime());
+                saveFile(CalendarUtilities.getFFDateAndTime());
             }
             else{
                 saveFile(filename);
@@ -892,7 +892,7 @@ public class MessageFormApp extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2MouseClicked
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        print(CalendarUtilities.getDateAndTime()); //temp
+        print(CalendarUtilities.getFFDateAndTime()); //temp
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**

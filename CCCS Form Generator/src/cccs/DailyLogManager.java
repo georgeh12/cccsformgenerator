@@ -13,7 +13,7 @@ import java.io.*;
  */
 public class DailyLogManager {
     private static File getFile(Calendar calendar){
-        return new File("Log\\" + CalendarUtilities.getYearAndDate(calendar));
+        return new File("Log\\" + CalendarUtilities.getFFYearAndDate(calendar));
     }
 
     public static void saveFile(DailyLog daily_log, Calendar calendar){

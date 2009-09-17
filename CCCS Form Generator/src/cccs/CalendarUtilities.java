@@ -12,6 +12,13 @@ import java.util.*;
  * @author George Hardigg
  */
 public class CalendarUtilities {
+    private static String applyFFormatting(String s){
+        return s.replace(':', '.').replace('/', '-');
+    }
+
+    public static String formatDay(){
+        return formatDay(Calendar.getInstance());
+    }
 
     public static String formatDay(Calendar day){
         String dow = "";
@@ -42,26 +49,42 @@ public class CalendarUtilities {
         return dow;
     }
     
-    public static String getYearAndDate(){
-        return getYearAndDate(Calendar.getInstance());
+    public static String getFFYearAndDate(){
+        return getFFYearAndDate(Calendar.getInstance());
     }
 
-    public static String getYearAndDate(Calendar calendar){
-        return calendar.get(Calendar.YEAR) + "-" +
-                formatDate(calendar).replace('/', '-');
+    public static String getFFYearAndDate(Calendar calendar){
+        return applyFFormatting(getYearAndDate(calendar));
     }
 
-    public static String getDateAndTime(){
-        return getDateAndTime(Calendar.getInstance());
+    private static String getYearAndDate(Calendar calendar){
+        return calendar.get(Calendar.YEAR) + "/" +
+                formatDate(calendar);
     }
 
-    public static String getDateAndTime(Calendar calendar){
+    public static String getFFDateAndTime(){
+        return getFFDateAndTime(Calendar.getInstance());
+    }
+
+    private static String getFFDateAndTime(Calendar calendar){
+        return applyFFormatting(getDateAndTime(calendar));
+    }
+
+    private static String getDateAndTime(Calendar calendar){
         return getYearAndDate(calendar) + " " +
-                formatTime(calendar).replace(':', '.');
+                formatTime(calendar);
+    }
+
+    public static String formatDate(){
+        return formatDate(Calendar.getInstance());
     }
 
     public static String formatDate(Calendar date){
         return "" + (date.get(Calendar.MONTH) + 1) + '/' + date.get(Calendar.DATE);
+    }
+
+    public static String formatTime(){
+        return formatTime(Calendar.getInstance());
     }
 
     public static String formatTime(Calendar time){
