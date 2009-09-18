@@ -84,6 +84,6 @@ public class PhoneNumber implements Serializable {
     }
 
     public boolean equals(PhoneNumber contact){
-        return this.type.compareTo(contact.type) == 0;
+        return this.type.equals(contact.type);
     }
 }

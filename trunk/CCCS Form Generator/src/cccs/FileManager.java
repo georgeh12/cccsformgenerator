@@ -28,8 +28,8 @@ public class FileManager {
             }
 
             private boolean equals(Login login){
-                if(this.username.compareTo(username) == 0 &&
-                        this.password.compareTo(password) == 0){
+                if(this.username.equals(username) &&
+                        this.password.equals(password)){
                     return true;
                 }
 
@@ -125,7 +125,7 @@ public class FileManager {
     }
 
     public static void saveFile(LoginManager.Login login, File filename, Object my_object){
-        if(filename.getName().compareTo("login") != 0){
+        if(!filename.getName().toLowerCase().equals("login")){
             if(LoginManager.authenticate(login) != null){
                 saveFile(new File(login.getDir().getName() + "\\" + filename.getParent()), filename.getName(), my_object, login.password);
             }

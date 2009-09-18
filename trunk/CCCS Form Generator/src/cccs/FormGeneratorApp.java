@@ -261,13 +261,13 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         String username = "";
         String password = "";
 
-        if((username = getUsername("Enter your username", "Login")) == null){
+        if((username = getUsername("Enter your username", "Authenticating")) == null){
             return null;
         }
         else{
             while(password.isEmpty()){
                 //TODO change to password field
-                String input = JOptionPane.showInputDialog(this, "Enter your password", "Login", JOptionPane.OK_CANCEL_OPTION);
+                String input = JOptionPane.showInputDialog(this, "Enter your password", "Authenticating", JOptionPane.OK_CANCEL_OPTION);
 
                 if(input == null){
                     return null;
@@ -338,7 +338,7 @@ public class FormGeneratorApp extends javax.swing.JFrame {
                     if(verification == null){
                         return;
                     }
-                    else if(password.compareTo(verification) != 0){
+                    else if(!password.equals(verification)){
                         JOptionPane.showMessageDialog(this, "Passwords must match, try again");
                         password = "";
                     }
