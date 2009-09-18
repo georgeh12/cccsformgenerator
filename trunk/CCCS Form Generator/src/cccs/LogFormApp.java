@@ -81,8 +81,6 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
                 jComboBox1.addItem(daily_log.vouchers.get(i));
             }
         }
-        jTextField2.setText("");
-        jTextField3.setText("");
         
         save();
     }
@@ -446,6 +444,15 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         jComboBox1.setSelectedIndex(jComboBox1.getItemCount() - 1);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private static String removeNoID(String client_id){
+        if(client_id.compareTo(DailyLog.Client.noID()) == 0){
+            return "";
+        }
+        else{
+            return client_id;
+        }
+    }
+
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         if(jToggleButton1.isSelected()){
             jToggleButton1.setText("Save");
@@ -458,14 +465,14 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             if(jRadioButton3.isSelected()){
                 DailyLog.Certificate certificate = 
                         (DailyLog.Certificate)jComboBox1.getSelectedItem();
-                jTextField2.setText(certificate.toString());
-                jTextField3.setText(Long.toString(certificate.get()));
+                jTextField2.setText(removeNoID(certificate.toString()));
+                jTextField3.setText(certificate.get());
             }
             else{
                 DailyLog.Voucher voucher =
                         (DailyLog.Voucher)jComboBox1.getSelectedItem();
-                jTextField2.setText(voucher.toString());
-                jTextField3.setText(Long.toString(voucher.get()));
+                jTextField2.setText(removeNoID(voucher.toString()));
+                jTextField3.setText(voucher.get());
             }
         }
         else{
