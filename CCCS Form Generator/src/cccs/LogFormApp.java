@@ -445,7 +445,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private static String removeNoID(String client_id){
-        if(client_id.compareTo(DailyLog.Client.noID()) == 0){
+        if(client_id.equals(DailyLog.Client.noID())){
             return "";
         }
         else{
