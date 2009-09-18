@@ -34,7 +34,6 @@ public class CalendarGUI extends JFrame implements ActionListener{
     //Label that Tells what month.
     private JLabel lblMonth;
     private JLabel lblYear;
-    private JFrame f =new JFrame();
     private JButton Daybuttons[];
     private Calendar calendar = null;
 
@@ -120,7 +119,7 @@ public class CalendarGUI extends JFrame implements ActionListener{
                     Calendar calendar = Calendar.getInstance();
 
                     calendar.set(Calendar.YEAR, year);
-                    calendar.set(Calendar.MONTH, Month + 1);
+                    calendar.set(Calendar.MONTH, Month);
                     calendar.set(Calendar.DAY_OF_MONTH, i - startDay + 1);
 
                     getDailyLog(calendar);

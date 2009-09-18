@@ -24,8 +24,12 @@ public class DailyLog implements Serializable{
             return client_id;
         }
 
+        public static String noID(){
+            return "No ID";
+        }
+
         public String toString(){
-            return (client_id != 0 ? Integer.toString(client_id) : "No ID");
+            return (client_id != 0 ? Integer.toString(client_id) : noID());
         }
     }
 
@@ -38,8 +42,14 @@ public class DailyLog implements Serializable{
             this.certificate = certificate;
         }
 
-        public long get(){
-            return certificate;
+        public String get(){
+            String certificate_string = Long.toString(certificate);
+
+            while(certificate_string.length() < 9){
+                certificate_string = "0" + certificate_string;
+            }
+
+            return certificate_string;
         }
 
         public static long parseCertificate(String certificate){
@@ -72,8 +82,14 @@ public class DailyLog implements Serializable{
             this.voucher = voucher;
         }
 
-        public long get(){
-            return voucher;
+        public String get(){
+            String voucher_string = Long.toString(voucher);
+
+            while(voucher_string.length() < 16){
+                voucher_string = "0" + voucher_string;
+            }
+
+            return voucher_string;
         }
 
         public static long parseVoucher(String voucher){

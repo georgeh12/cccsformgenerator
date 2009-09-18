@@ -266,6 +266,7 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         }
         else{
             while(password.isEmpty()){
+                //TODO change to password field
                 String input = JOptionPane.showInputDialog(this, "Enter your password", "Login", JOptionPane.OK_CANCEL_OPTION);
 
                 if(input == null){
