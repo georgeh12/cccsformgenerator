@@ -247,7 +247,7 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         String username = "";
         
         while(username.isEmpty()){
-            username = JOptionPane.showInputDialog(this, message, title, JOptionPane.OK_CANCEL_OPTION);
+            username = JOptionPane.showInputDialog(this, message, title, JOptionPane.QUESTION_MESSAGE);
 
             if(username == null){
                 break;
@@ -266,14 +266,14 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         }
         else{
             while(password.isEmpty()){
-                //TODO change to password field
-                String input = JOptionPane.showInputDialog(this, "Enter your password", "Authenticating", JOptionPane.OK_CANCEL_OPTION);
+                PasswordDialog dialog = new PasswordDialog();
+                int input = JOptionPane.showConfirmDialog(this, dialog, "Authenticating", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-                if(input == null){
-                    return null;
+                if(input == JOptionPane.OK_OPTION){
+                    password = dialog.getPassword();
                 }
                 else{
-                    password = input;
+                    return null;
                 }
             }
 
