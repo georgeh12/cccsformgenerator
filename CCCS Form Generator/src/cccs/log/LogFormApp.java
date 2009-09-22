@@ -25,7 +25,7 @@ import java.io.*;
  */
 public class LogFormApp extends javax.swing.JFrame implements WindowListener, MouseListener{
     private CalendarGUI calendar_gui = null;
-    private DailyLog daily_log = new DailyLog();
+    private TaskLog daily_log = new TaskLog();
     private Calendar calendar;
 
     /** Creates new form LogFormApp */
@@ -40,14 +40,14 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     private void loadDate(Calendar calendar){
         this.calendar = calendar;
         
-        daily_log = DailyLogManager.loadFile(calendar);
+        daily_log = TaskLogManager.loadFile(calendar);
 
         setTitle(CalendarUtilities.getYearAndDate(calendar));
         load();
     }
 
     private void save(){
-        DailyLogManager.saveFile(daily_log, calendar);
+        TaskLogManager.saveFile(daily_log, calendar);
     }
 
     private void load(){
@@ -97,7 +97,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
                     getField2()));
         }
         else{
-            DailyLog.Certificate certificate = DailyLog.parseCertificate(
+            TaskLog.Certificate certificate = TaskLog.parseCertificate(
                     getClient(),
                     getField2());
             jComboBox1.removeItemAt(index);
@@ -116,7 +116,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         }
         else{
             jComboBox1.removeItemAt(index);
-            jComboBox1.insertItemAt(DailyLog.parseVoucher(
+            jComboBox1.insertItemAt(TaskLog.parseVoucher(
                     getClient(),
                     getField2()),
                     index);
@@ -460,7 +460,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private static String removeNoID(String client_id){
-        if(client_id.equals(DailyLog.Client.noID())){
+        if(client_id.equals(TaskLog.Client.noID())){
             return "";
         }
         else{
@@ -478,14 +478,14 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             jRadioButton4.setEnabled(false);
             
             if(jRadioButton3.isSelected()){
-                DailyLog.Certificate certificate = 
-                        (DailyLog.Certificate)jComboBox1.getSelectedItem();
+                TaskLog.Certificate certificate =
+                        (TaskLog.Certificate)jComboBox1.getSelectedItem();
                 jTextField2.setText(removeNoID(certificate.toString()));
                 jTextField3.setText(certificate.get());
             }
             else{
-                DailyLog.Voucher voucher =
-                        (DailyLog.Voucher)jComboBox1.getSelectedItem();
+                TaskLog.Voucher voucher =
+                        (TaskLog.Voucher)jComboBox1.getSelectedItem();
                 jTextField2.setText(removeNoID(voucher.toString()));
                 jTextField3.setText(voucher.get());
             }
