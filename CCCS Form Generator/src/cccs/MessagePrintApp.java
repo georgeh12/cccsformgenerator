@@ -72,7 +72,7 @@ public class MessagePrintApp extends javax.swing.JFrame {
 
             PrintUtilities.printComponent(jPanel1);
 
-            JOptionPane.showMessageDialog(this, "Click OK to continue.");
+            if(i < messages.size())JOptionPane.showMessageDialog(this, "Click OK to continue.");
         }
 
         PrintUtilities.enableDoubleBuffering(this);
@@ -138,6 +138,7 @@ public class MessagePrintApp extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setName("jPanel1"); // NOI18N

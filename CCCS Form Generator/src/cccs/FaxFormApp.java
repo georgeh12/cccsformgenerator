@@ -172,6 +172,7 @@ public class FaxFormApp extends javax.swing.JFrame {
         setTitle("CCCS Fax Form");
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(FaxFormApp.class);
         setBackground(resourceMap.getColor("background")); // NOI18N
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setName("jPanel1"); // NOI18N
