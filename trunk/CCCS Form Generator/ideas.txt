@@ -4,15 +4,15 @@
 -add a delete all saved button to saved class files
 -make sure user can't enter _default or illegal microsoft characters as a username value
 -Load last created doc if no name is entered for messages
--print out messages in date order
--make password *
-+don't make fields go blank on daily log if you switch between voucher and cert
-+change voucher #s and cert #'s to add 0's to front if < 9 or 16
-+for daily log, if NO ID is loaded should load blank
--Daily log's date chooser selects 1 month off
--Add extensions to phone numbers
 -Give messages, faxes, etc unique names for file extensions so file chooser
  won't be able to choose a bad filetype
 -Let file manager handle extensions and auto names for files
 -Change login button to say "logout" when a user is logged in.
 -Allow login to accept Guest as an option/add a button to login as guest.
++print out messages in date order
++make password *
++don't make fields go blank on daily log if you switch between voucher and cert
++change voucher #s and cert #'s to add 0's to front if < 9 or 16
++for daily log, if NO ID is loaded should load blank
++Daily log's date chooser selects 1 month off
++Add extensions to phone numbers

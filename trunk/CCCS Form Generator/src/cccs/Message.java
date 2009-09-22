@@ -11,7 +11,7 @@ import java.io.*;
  *
  * @author George Hardigg
  */
-public class Message implements Serializable {
+public class Message implements Serializable, Comparable {
     public enum CallFrom{
         Client, Creditor, Coworker, Other;
 
@@ -32,7 +32,7 @@ public class Message implements Serializable {
             return "";
         }
     }
-    public enum Dept{
+    public enum Dept {
         Counseling, Operations, Housing;
 
         public String toString(){
@@ -74,7 +74,7 @@ public class Message implements Serializable {
         }
     }
 
-    private Calendar date = Calendar.getInstance();
+    private Calendar date = null;
     private CallFrom call_from = CallFrom.Client;
     private Dept dept = Dept.Counseling;
     private String name = "";
@@ -96,6 +96,8 @@ public class Message implements Serializable {
             this.contacts = contacts;
             this.message = message;
             this.creditor_info = creditor_info;
+            this.date.set(Calendar.SECOND, 0);
+            this.date.set(Calendar.MILLISECOND, 0);
     }
 
     public Calendar getDate(){
@@ -145,5 +147,16 @@ public class Message implements Serializable {
     public String toString(){
         return name + " @ " + formatDay() + ", " + formatDate() + " " +
                 formatTime();
+    }
+
+    public int compareTo(Object o) {
+        if(o.getClass() != Message.class){
+            return 0;
+        }
+        else{
+            return dept.compareTo(((Message)o).dept) == 0 ?
+                date.compareTo((Calendar)((Message)o).date) :
+                dept.compareTo(((Message)o).dept);
+        }
     }
 }

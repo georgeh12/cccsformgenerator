@@ -162,6 +162,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 20));
         jButton1.setText("-");
@@ -190,7 +191,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         jTextField2.setName("jTextField2"); // NOI18N
 
         buttonGroup2.add(jRadioButton3);
-        jRadioButton3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jRadioButton3.setFont(new java.awt.Font("Tahoma", 0, 14));
         jRadioButton3.setSelected(true);
         jRadioButton3.setText("Certificate");
         jRadioButton3.setName("jRadioButton3"); // NOI18N
@@ -201,7 +202,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         });
 
         buttonGroup2.add(jRadioButton4);
-        jRadioButton4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jRadioButton4.setFont(new java.awt.Font("Tahoma", 0, 14));
         jRadioButton4.setText("Voucher");
         jRadioButton4.setName("jRadioButton4"); // NOI18N
         jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -210,7 +211,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             }
         });
 
-        jButton3.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        jButton3.setFont(new java.awt.Font("SansSerif", 0, 24));
         jButton3.setText("Add");
         jButton3.setName("jButton3"); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -241,7 +242,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         });
 
         buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jRadioButton2.setFont(new java.awt.Font("Tahoma", 0, 12));
         jRadioButton2.setText("Out");
         jRadioButton2.setName("jRadioButton2"); // NOI18N
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {

@@ -129,6 +129,8 @@ public class MessageFormApp extends javax.swing.JFrame {
 
     private Message save(){
         try{
+            if(!PhoneNumber.isEmpty(jTextField3.getText())) jButton1ActionPerformed(null);
+
             Calendar date = Calendar.getInstance();
             date.setTime((Date)((SpinnerDateModel)jSpinner1.getModel()).getValue());
             Calendar time = Calendar.getInstance();
@@ -202,8 +204,10 @@ public class MessageFormApp extends javax.swing.JFrame {
 
     private void load(Message message){
         try{
-            jSpinner1.getModel().setValue(message.getDate().getTime());
-            jSpinner2.getModel().setValue(message.getDate().getTime());
+            if(message.getDate() != null){
+                jSpinner1.getModel().setValue(message.getDate().getTime());
+                jSpinner2.getModel().setValue(message.getDate().getTime());
+            }
 
             jTextField4.setText("");
             jTextField5.setText("");
@@ -248,6 +252,7 @@ public class MessageFormApp extends javax.swing.JFrame {
             jTextField2.setText(message.getName());
 
             jTextField3.setText("");
+            jTextField7.setText("");
             jRadioButton8.setSelected(true);
             setPhoneButtons(true);
 
@@ -270,11 +275,16 @@ public class MessageFormApp extends javax.swing.JFrame {
     }
 
     private void saveFile(String filename){
+        PriorityQueue<Message> sorted_messages = new PriorityQueue<Message>();
         ArrayList<Message> messages = new ArrayList<Message>();
 
         for(int i = 1; i < jMenu1.getItemCount(); i ++){
             ActionListener[] message_arr = jMenu1.getItem(i).getActionListeners();
-            messages.add(((MessageListener)message_arr[0]).get());
+            sorted_messages.offer(((MessageListener)message_arr[0]).get());
+        }
+
+        while(!sorted_messages.isEmpty()){
+            messages.add(sorted_messages.poll());
         }
 
         FileManager.saveFile(FormGeneratorApp.login, getFile(filename), messages);
@@ -342,6 +352,10 @@ public class MessageFormApp extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel9.setVisible(false);
+        jTextField7 = new javax.swing.JTextField();
+        jTextField7.setVisible(false);
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
@@ -351,12 +365,14 @@ public class MessageFormApp extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CCCS Message Form");
+        setResizable(false);
 
         jSpinner1.setModel(new javax.swing.SpinnerDateModel());
         jSpinner1.setEditor(new javax.swing.JSpinner.DateEditor(jSpinner1, "MM/dd/yy"));
@@ -370,6 +386,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jButton1.setText("Add");
         jButton1.setName("jButton1"); // NOI18N
+        jButton1.setNextFocusableComponent(jTextArea1);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -424,7 +441,6 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        jTextArea1.setColumns(20);
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(1);
         jTextArea1.setWrapStyleWord(true);
@@ -463,6 +479,11 @@ public class MessageFormApp extends javax.swing.JFrame {
         buttonGroup3.add(jRadioButton10);
         jRadioButton10.setText("Work");
         jRadioButton10.setName("jRadioButton10"); // NOI18N
+        jRadioButton10.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jRadioButton10ItemStateChanged(evt);
+            }
+        });
 
         jLabel1.setText("Date:");
         jLabel1.setName("jLabel1"); // NOI18N
@@ -487,6 +508,11 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jLabel8.setText("Callback Number:");
         jLabel8.setName("jLabel8"); // NOI18N
+
+        jLabel9.setText("extension:");
+        jLabel9.setName("jLabel9"); // NOI18N
+
+        jTextField7.setName("jTextField7"); // NOI18N
 
         jMenuBar1.setName("jMenuBar1"); // NOI18N
 
@@ -545,8 +571,17 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu3.setText("Session");
+        jMenu3.setText("Options");
         jMenu3.setName("jMenu3"); // NOI18N
+
+        jCheckBoxMenuItem1.setText("Always On Top");
+        jCheckBoxMenuItem1.setName("jCheckBoxMenuItem1"); // NOI18N
+        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jCheckBoxMenuItem1);
 
         jMenuItem1.setText("Save Session");
         jMenuItem1.setName("jMenuItem1"); // NOI18N
@@ -585,49 +620,53 @@ public class MessageFormApp extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jToggleButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jRadioButton8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jRadioButton5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton7))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -635,15 +674,15 @@ public class MessageFormApp extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)
+                        .addComponent(jRadioButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton3)
+                        .addComponent(jRadioButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton4))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jRadioButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)))
@@ -692,20 +731,23 @@ public class MessageFormApp extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jRadioButton8)
-                    .addComponent(jRadioButton9)
-                    .addComponent(jRadioButton10))
+                    .addComponent(jLabel8)
+                    .addComponent(jButton1))
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButton8)
+                        .addComponent(jRadioButton9)
+                        .addComponent(jRadioButton10)
+                        .addComponent(jLabel9))
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToggleButton1)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -736,11 +778,11 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         try{
             if(index < 0){
-                jComboBox1.addItem(new PhoneNumber(type, PhoneNumber.format(jTextField3.getText())));
+                jComboBox1.addItem(new PhoneNumber(type, PhoneNumber.format(jTextField3.getText()), PhoneNumber.formatExt(jTextField7.getText())));
             }
             else{
                 jComboBox1.removeItemAt(index);
-                jComboBox1.insertItemAt(new PhoneNumber(type, PhoneNumber.format(jTextField3.getText())),
+                jComboBox1.insertItemAt(new PhoneNumber(type, PhoneNumber.format(jTextField3.getText()), PhoneNumber.formatExt(jTextField7.getText())),
                     index);
             }
         }
@@ -757,6 +799,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
     private void clearPhoneFields(){
         jTextField3.setText("");
+        jTextField7.setText("");
         jRadioButton8.setSelected(true);
     }
 
@@ -781,7 +824,8 @@ public class MessageFormApp extends javax.swing.JFrame {
             
             Object selected = jComboBox1.getSelectedItem();
             if(selected != null){
-                jTextField3.setText(((PhoneNumber)selected).toString());
+                jTextField3.setText(((PhoneNumber)selected).toPhoneString());
+                jTextField7.setText(((PhoneNumber)selected).toExtString());
                 if(((PhoneNumber)selected).getType() == PhoneNumber.PhoneType.Cell){
                     jRadioButton9.setSelected(true);
                 }
@@ -810,20 +854,6 @@ public class MessageFormApp extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jComboBox1.removeItemAt(jComboBox1.getSelectedIndex());
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
-        switch(saveMessagesFirst()){
-            case JOptionPane.CANCEL_OPTION:
-                break;
-            case JOptionPane.YES_OPTION:
-                saveFile(CalendarUtilities.getFFDateAndTime()); //temp
-            case JOptionPane.NO_OPTION:
-                dispose();
-                FormGeneratorApp main_menu = new FormGeneratorApp();
-                main_menu.setLocationRelativeTo(this);
-                main_menu.setVisible(true);
-        }
-    }//GEN-LAST:event_jMenu5MouseClicked
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         String filename = JOptionPane.showInputDialog(this, "Enter a filename", "Save Current Session", JOptionPane.OK_CANCEL_OPTION);
@@ -885,15 +915,44 @@ public class MessageFormApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        print(CalendarUtilities.getFFDateAndTime());
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         save();
 
         loadNewForm();
     }//GEN-LAST:event_jMenu2MouseClicked
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        print(CalendarUtilities.getFFDateAndTime()); //temp
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
+        switch(saveMessagesFirst()){
+            case JOptionPane.CANCEL_OPTION:
+                break;
+            case JOptionPane.YES_OPTION:
+                saveFile(CalendarUtilities.getFFDateAndTime());
+            case JOptionPane.NO_OPTION:
+                dispose();
+                FormGeneratorApp main_menu = new FormGeneratorApp();
+                main_menu.setLocationRelativeTo(this);
+                main_menu.setVisible(true);
+        }
+    }//GEN-LAST:event_jMenu5MouseClicked
+
+    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+        setAlwaysOnTop(jCheckBoxMenuItem1.isSelected());
+    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+
+    private void jRadioButton10ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jRadioButton10ItemStateChanged
+        if(jRadioButton10.isSelected()){
+            jLabel9.setVisible(true);
+            jTextField7.setVisible(true);
+        }
+        else{
+            jLabel9.setVisible(false);
+            jTextField7.setVisible(false);
+        }
+    }//GEN-LAST:event_jRadioButton10ItemStateChanged
 
     /**
     * @param args the command line arguments
@@ -913,6 +972,7 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup4;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -922,6 +982,7 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -954,6 +1015,7 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 
