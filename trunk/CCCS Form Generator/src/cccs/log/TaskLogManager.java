@@ -14,19 +14,19 @@ import java.io.*;
  *
  * @author George Hardigg
  */
-public class DailyLogManager {
+public class TaskLogManager {
     private static File getFile(Calendar calendar){
         return new File("Log\\" + CalendarUtilities.getFFYearAndDate(calendar));
     }
 
-    public static void saveFile(DailyLog daily_log, Calendar calendar){
+    public static void saveFile(TaskLog daily_log, Calendar calendar){
         FileManager.saveFile(FormGeneratorApp.login, getFile(calendar), daily_log);
     }
 
-    public static DailyLog loadFile(Calendar calendar){
-        DailyLog daily_log = null;
-        if((daily_log = (DailyLog)FileManager.loadFile(FormGeneratorApp.login, getFile(calendar), DailyLog.class)) == null){
-            daily_log = new DailyLog();
+    public static TaskLog loadFile(Calendar calendar){
+        TaskLog daily_log = null;
+        if((daily_log = (TaskLog)FileManager.loadFile(FormGeneratorApp.login, getFile(calendar), TaskLog.class)) == null){
+            daily_log = new TaskLog();
             saveFile(daily_log, calendar);
         }
 

@@ -11,7 +11,7 @@ import java.io.*;
  *
  * @author George Hardigg
  */
-public class DailyLog implements Serializable{
+public class TaskLog implements Serializable{
     
     public static class Client implements Serializable{
         private int client_id = 0;
@@ -135,9 +135,9 @@ public class DailyLog implements Serializable{
     public ArrayList<Voucher> vouchers = new ArrayList<Voucher>();
     public Calendar calendar = Calendar.getInstance();
 
-    public DailyLog(){}
+    public TaskLog(){}
 
-    public DailyLog(Calendar calendar){
+    public TaskLog(Calendar calendar){
         this.calendar = calendar;
     }
 
