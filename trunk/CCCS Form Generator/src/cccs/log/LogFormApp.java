@@ -10,10 +10,14 @@
  * @author George Hardigg
  */
 
-package cccs;
+package cccs.log;
+import cccs.utility.CalendarUtilities;
+import cccs.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.net.*;
+import java.io.*;
 
 /**
  *
@@ -38,7 +42,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         
         daily_log = DailyLogManager.loadFile(calendar);
 
-        setTitle(CalendarUtilities.getFFYearAndDate(calendar));
+        setTitle(CalendarUtilities.getYearAndDate(calendar));
         load();
     }
 
@@ -115,8 +119,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             jComboBox1.insertItemAt(DailyLog.parseVoucher(
                     getClient(),
                     getField2()),
-                index);
-            jComboBox1.setSelectedIndex(index);
+                    index);
         }
     }
 
@@ -126,6 +129,11 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
 
     private String getField2(){
         return jTextField3.getText();
+    }
+
+    private void clearTextBoxes(){
+        jTextField2.setText("");
+        jTextField3.setText("");
     }
 
     /** This method is called from within the constructor to
@@ -289,6 +297,11 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
 
         jMenuItem1.setText("E-mail");
         jMenuItem1.setName("jMenuItem1"); // NOI18N
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem1);
 
         jMenuBar1.add(jMenu2);
@@ -443,6 +456,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
 
         loadButtonGroup2();
         jComboBox1.setSelectedIndex(jComboBox1.getItemCount() - 1);
+        clearTextBoxes();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private static String removeNoID(String client_id){
@@ -477,6 +491,8 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             }
         }
         else{
+            int index = jComboBox1.getSelectedIndex();
+
             jToggleButton1.setText("Edit");
             jButton3.setEnabled(true);
             jButton4.setEnabled(true);
@@ -485,15 +501,16 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             jRadioButton4.setEnabled(true);
 
             if(jRadioButton3.isSelected()){
-                int index = jComboBox1.getSelectedIndex();
                 saveCertificate(index);
             }
             else{
-                int index = jComboBox1.getSelectedIndex();
                 saveVoucher(index);
             }
 
             loadButtonGroup2();
+
+            clearTextBoxes();
+            jComboBox1.setSelectedIndex(index);
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
@@ -529,6 +546,23 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         loadButtonGroup1();
     }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        try{
+            String name = FormGeneratorApp.display_name;
+            String date = CalendarUtilities.formatDate(calendar);
+            URI email = new URI("mailto:thoffman@cccs-inc.org?subject=" +
+                    name + "'s%20Task%20Log%20for%20" + date +
+                    "&body=" + daily_log.toString().replace(" ", "%20").replace("\r\n", "%0D%0A"));
+            Desktop.getDesktop().mail(email);
+        }
+        catch(URISyntaxException e){
+            e.printStackTrace();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
     * @param args the command line arguments

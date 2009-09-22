@@ -3,7 +3,10 @@
  * and open the template in the editor.
  */
 
-package cccs;
+package cccs.message;
+import cccs.utility.CalendarUtilities;
+import cccs.utility.PhoneNumber;
+import cccs.*;
 import java.util.*;
 import java.io.*;
 

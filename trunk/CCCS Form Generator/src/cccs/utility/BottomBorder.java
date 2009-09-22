@@ -1,4 +1,4 @@
-package cccs;
+package cccs.utility;
 
 /**
  * @author Java tutorial at sun.com

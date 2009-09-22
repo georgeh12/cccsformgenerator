@@ -10,10 +10,14 @@
  * @author George Hardigg
  */
 
-package cccs;
+package cccs.message;
+import cccs.utility.FileManager;
+import cccs.utility.PhoneNumber;
+import cccs.utility.CalendarUtilities;
+import cccs.*;
 import javax.swing.*;
 import java.util.*;
-import cccs.Message.*;
+import cccs.message.Message.*;
 import java.io.*;
 import java.awt.event.*;
 

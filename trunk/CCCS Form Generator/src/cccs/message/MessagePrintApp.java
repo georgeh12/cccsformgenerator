@@ -10,7 +10,10 @@
  * @author George Hardigg
  */
 
-package cccs;
+package cccs.message;
+import cccs.utility.PhoneNumber;
+import cccs.utility.PrintUtilities;
+import cccs.*;
 import java.awt.Color;
 import java.util.*;
 import javax.swing.*;
