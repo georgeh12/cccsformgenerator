@@ -291,11 +291,24 @@ public class FormGeneratorApp extends javax.swing.JFrame {
     }
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        LoginManager.Login temp_login = authenticate();
-        
-        if(temp_login != null){
-            updateLogin(temp_login);
-            setLoginOptions();
+        if(jButton4.getText().equals("Login")){
+            LoginManager.Login temp_login = authenticate();
+
+            if(temp_login != null){
+                updateLogin(temp_login);
+                setLoginOptions();
+                jButton4.setText("Logout");
+            }
+        }
+        else{
+            if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to logout?",
+                "Logout Confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null)){
+                logout();
+                jButton4.setText("Login");
+            }
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -358,15 +371,19 @@ public class FormGeneratorApp extends javax.swing.JFrame {
                 "This will permanently delete all files associated with this user. Are you sure?",
                 "Confirm Delete",
                 JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null)){
+                JOptionPane.WARNING_MESSAGE, null)){
             LoginManager.remove(login);
-            home_dir = new File("_default");
-            login = null;
-            display_name = "";
-            jCheckBox1.setSelected(false);
-            setLoginOptions();
+            logout();
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void logout(){
+        home_dir = new File("_default");
+        login = null;
+        display_name = "";
+        jCheckBox1.setSelected(false);
+        setLoginOptions();
+    }
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         dispose();
