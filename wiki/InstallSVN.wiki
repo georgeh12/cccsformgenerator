@@ -8,7 +8,7 @@ This can be a real pain, so I have step-by-step instructions for installing SVN 
 
 = Details =
 
-1. Download Netbeans (6.5 or >) and Collabnet's subversion. Under the download tab you will find the subversion software.
+1. Download and install Netbeans (6.5 or >) and Collabnet's subversion. Under the download tab (look up) you will find the subversion software.
 
 2. Open Netbeans and click the menu options "Tools > Options". Click the "Miscellaneous" tab at the top. Click the "Versioning" tab under that. Select "Subversion" from the list on the left. For the text box labeled "Path to SVN executable File" enter "C:\Program Files\CollabNet Subversion Client", or wherever you installed the SVN client. Click "OK", that step is complete.
 
