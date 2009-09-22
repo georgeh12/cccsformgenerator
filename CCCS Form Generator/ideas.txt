@@ -7,7 +7,6 @@
 -Give messages, faxes, etc unique names for file extensions so file chooser
  won't be able to choose a bad filetype
 -Let file manager handle extensions and auto names for files
--Change login button to say "logout" when a user is logged in.
 -Allow login to accept Guest as an option/add a button to login as guest.
 +print out messages in date order
 +make password *
@@ -16,3 +15,4 @@
 +for daily log, if NO ID is loaded should load blank
 +Daily log's date chooser selects 1 month off
 +Add extensions to phone numbers
++Change login button to say "logout" when a user is logged in.
