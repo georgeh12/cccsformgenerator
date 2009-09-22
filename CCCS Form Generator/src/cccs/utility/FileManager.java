@@ -3,7 +3,8 @@
  * and open the template in the editor.
  */
 
-package cccs;
+package cccs.utility;
+import cccs.*;
 import java.io.*;
 import javax.swing.*;
 import javax.crypto.*;

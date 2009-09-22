@@ -10,7 +10,13 @@
  * @author George Hardigg
  */
 
-package cccs;
+package cccs.fax;
+import cccs.utility.CalendarUtilities;
+import cccs.utility.FileManager;
+import cccs.utility.PhoneNumber;
+import cccs.utility.PrintUtilities;
+import cccs.utility.BottomBorder;
+import cccs.*;
 import javax.swing.*;
 import java.io.*;
 import java.awt.*;
@@ -61,6 +67,8 @@ public class FaxFormApp extends javax.swing.JFrame {
         jTextField5.setEditable(editable);
         
         if(!editable){
+            jPanel1.setBackground(Color.WHITE);
+
             jTextArea2.setBackground(Color.WHITE);
             jTextField1.setBackground(Color.WHITE);
             jTextField3.setBackground(Color.WHITE);

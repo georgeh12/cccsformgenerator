@@ -1,4 +1,4 @@
-package cccs;
+package cccs.utility;
 
 import java.awt.*;
 import javax.swing.*;

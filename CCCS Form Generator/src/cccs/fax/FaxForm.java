@@ -3,7 +3,9 @@
  * and open the template in the editor.
  */
 
-package cccs;
+package cccs.fax;
+import cccs.utility.PhoneNumber;
+import cccs.*;
 import java.io.*;
 
 /**

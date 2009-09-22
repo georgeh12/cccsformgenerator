@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cccs;
+package cccs.log;
 import java.util.*;
 import java.io.*;
 
@@ -167,4 +167,36 @@ public class DailyLog implements Serializable{
                 Voucher.parseVoucher((String)voucher));
     }
 
+    public String toString(){
+        StringBuffer log = new StringBuffer();
+
+        log.append("Calls in: " + calls_in.get() + "\r\n");
+        log.append("Calls out: " + calls_out.get() + "\r\n");
+
+        log.append("\r\nClient completion: ");
+        if(!certificates.isEmpty()) log.append(certificates.get(0).toString());
+        for(int i = 1; i < certificates.size(); i ++){
+            log.append(", " + certificates.get(i).toString());
+        }
+
+        log.append("\r\nCertificates issued: ");
+        if(!certificates.isEmpty()) log.append(certificates.get(0).get());
+        for(int i = 1; i < certificates.size(); i ++){
+            log.append(", " + certificates.get(i).get());
+        }
+
+        log.append("\r\n\r\nClients waiving fee: ");
+        if(!vouchers.isEmpty()) log.append(vouchers.get(0).toString());
+        for(int i = 1; i < vouchers.size(); i ++){
+            log.append(", " + vouchers.get(i).toString());
+        }
+
+        log.append("\r\nVouchers issued: ");
+        if(!vouchers.isEmpty()) log.append(vouchers.get(0).get());
+        for(int i = 1; i < vouchers.size(); i ++){
+            log.append(", " + vouchers.get(i).get());
+        }
+
+        return log.toString();
+    }
 }

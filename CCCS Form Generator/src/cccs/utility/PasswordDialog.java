@@ -9,7 +9,7 @@
  * Created on Sep 21, 2009, 2:03:21 AM
  */
 
-package cccs;
+package cccs.utility;
 
 /**
  *
@@ -24,6 +24,10 @@ public class PasswordDialog extends javax.swing.JPanel {
 
     public String getPassword(){
         return String.copyValueOf(jPasswordField1.getPassword());
+    }
+
+    public void setLabel(String label){
+        jLabel1.setText(label);
     }
 
     /** This method is called from within the constructor to

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cccs;
+package cccs.log;
 
 /**
  * @author Original author: Sean Bahrami, seanb6@gmail.com

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package cccs;
+package cccs.utility;
 
 import java.util.*;
 
@@ -57,7 +57,7 @@ public class CalendarUtilities {
         return applyFFormatting(getYearAndDate(calendar));
     }
 
-    private static String getYearAndDate(Calendar calendar){
+    public static String getYearAndDate(Calendar calendar){
         return calendar.get(Calendar.YEAR) + "/" +
                 formatDate(calendar);
     }

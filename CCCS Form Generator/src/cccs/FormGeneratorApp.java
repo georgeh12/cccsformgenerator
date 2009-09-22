@@ -11,9 +11,13 @@
  */
 
 package cccs;
+import cccs.utility.PasswordDialog;
+import cccs.message.MessageFormApp;
+import cccs.fax.FaxFormApp;
+import cccs.log.LogFormApp;
 import javax.swing.*;
 import java.io.*;
-import cccs.FileManager.LoginManager;
+import cccs.utility.FileManager.LoginManager;
 
 /**
  * Defined filetypes: .fga, .ffa, .mfa, .lfa
@@ -30,57 +34,24 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        setLoginOptions();
     }
 
-    private void updateLogin(LoginManager.Login login){
+    private void login(LoginManager.Login login){
         home_dir = login.getDir();
         this.login = login;
         display_name = login.getDisplay();
+        setTitle("Welcome, " + display_name + "!");
+        jMenu2.setVisible(true);
+        jLabel2.setText(display_name);
     }
 
-    private void setLoginOptions(){
-        if(login == null){
-            jButton1.setVisible(false);
-            jButton2.setVisible(false);
-            jButton3.setVisible(false);
-            this.setTitle("CCCS Form Generator");
-        }
-        else{
-            jButton1.setVisible(true);
-            jButton2.setVisible(true);
-            jButton3.setVisible(true);
-            this.setTitle("Welcome, " + display_name + "!");
-        }
-
-        if(jCheckBox1.isSelected()){
-            jButton5.setVisible(true);
-
-            //Edit and delete buttons
-            if(login == null){
-                jButton6.setVisible(false);
-                jButton7.setVisible(false);
-            }
-            else{
-                jButton7.setVisible(true);
-                jButton6.setVisible(true);
-            }
-
-            //Display name label
-            if(login != null){
-                jLabel1.setVisible(true);
-                jLabel2.setVisible(true);
-                jLabel2.setText(display_name);
-            }
-        }
-        else{
-            jButton5.setVisible(false);
-            jButton6.setVisible(false);
-            jButton7.setVisible(false);
-            jLabel1.setVisible(false);
-            jLabel2.setVisible(false);
-        }
+    private void logout(){
+        home_dir = new File("_default");
+        login = null;
+        display_name = "";
+        setTitle("Welcome!");
+        jMenu2.setVisible(false);
+        jLabel2.setText("");
     }
 
     /** This method is called from within the constructor to
@@ -95,15 +66,19 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton7 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu2.setVisible(false);
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Welcome!");
         setResizable(false);
 
         jButton1.setText("Messages");
@@ -130,52 +105,62 @@ public class FormGeneratorApp extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setText("Login");
-        jButton4.setName("jButton4"); // NOI18N
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jButton5.setText("Create New Login");
-        jButton5.setName("jButton5"); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jButton6.setText("Delete Login");
-        jButton6.setName("jButton6"); // NOI18N
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox1.setText("Show Options");
-        jCheckBox1.setName("jCheckBox1"); // NOI18N
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
-            }
-        });
-
-        jButton7.setText("Edit Display Name");
-        jButton7.setName("jButton7"); // NOI18N
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Logged in as:");
         jLabel1.setName("jLabel1"); // NOI18N
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setName("jLabel2"); // NOI18N
+
+        jMenuBar1.setName("jMenuBar1"); // NOI18N
+
+        jMenu1.setText("File");
+        jMenu1.setName("jMenu1"); // NOI18N
+
+        jMenuItem1.setText("Login");
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("New User");
+        jMenuItem2.setName("jMenuItem2"); // NOI18N
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenu2.setName("jMenu2"); // NOI18N
+
+        jMenuItem3.setText("Display Name");
+        jMenuItem3.setName("jMenuItem3"); // NOI18N
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Delete User");
+        jMenuItem4.setName("jMenuItem4"); // NOI18N
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -184,21 +169,12 @@ public class FormGeneratorApp extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                        .addGap(14, 14, 14))))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,20 +185,10 @@ public class FormGeneratorApp extends javax.swing.JFrame {
                 .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -243,7 +209,7 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         fax_form.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public String getUsername(String message, String title){
+    private String getUsername(String message, String title){
         String username = "";
         
         while(username.isEmpty()){
@@ -255,6 +221,37 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         }
 
         return username;
+    }
+
+    private String getPassword(String title){
+        while(true){
+            PasswordDialog dialog1 = new PasswordDialog();
+            int input1 = JOptionPane.showConfirmDialog(this, dialog1, "Enter a password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            String original = dialog1.getPassword();
+
+            if(input1 == JOptionPane.CANCEL_OPTION || input1 == JOptionPane.CLOSED_OPTION){
+                return null;
+            }
+            else if(original.length() < 8){
+                JOptionPane.showMessageDialog(this, "Password must be at least 8 characters");
+            }
+            else{
+                PasswordDialog dialog2 = new PasswordDialog();
+                dialog2.setLabel("Re-enter your password");
+                int input2 = JOptionPane.showConfirmDialog(this, dialog2, "Create Login", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                String verification = dialog2.getPassword();
+
+                if(input2 == JOptionPane.CANCEL_OPTION || input2 == JOptionPane.CLOSED_OPTION){
+                    return null;
+                }
+                else if(!original.equals(verification)){
+                    JOptionPane.showMessageDialog(this, "Passwords must match, try again");
+                }
+                else{
+                    return original;
+                }
+            }
+        }
     }
 
     private LoginManager.Login authenticate(){
@@ -290,14 +287,20 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         return null;
     }
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if(jButton4.getText().equals("Login")){
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        dispose();
+        LogFormApp daily_log_form = new LogFormApp();
+        daily_log_form.setLocationRelativeTo(this);
+        daily_log_form.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if(jMenuItem1.getText().equals("Login")){
             LoginManager.Login temp_login = authenticate();
 
             if(temp_login != null){
-                updateLogin(temp_login);
-                setLoginOptions();
-                jButton4.setText("Logout");
+                login(temp_login);
+                jMenuItem1.setText("Logout");
             }
         }
         else{
@@ -307,16 +310,26 @@ public class FormGeneratorApp extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null)){
                 logout();
-                jButton4.setText("Login");
+                jMenuItem1.setText("Login");
             }
         }
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        setLoginOptions();
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        String username = "";
+        String password = "";
+        String title =  "Create New User";
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if((username = getUsername("Enter a username", title)) != null){
+            if((password = getPassword(title)) != null){
+                LoginManager.Login temp_login = new LoginManager.Login(username, password);
+                login(temp_login);
+                LoginManager.add(temp_login);
+            }
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         String new_display_name = "";
 
         new_display_name = getUsername("Enter your preferred display name", "Edit Display Name");
@@ -324,49 +337,11 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         if(new_display_name != null){
             login.setDisplay(new_display_name);
             LoginManager.set(login);
-            updateLogin(login);
-            setLoginOptions();
+            login(login);
         }
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        String username = "";
-        String password = "";
-
-        if((username = getUsername("Enter a username", "Create Login")) != null){
-
-            while(password.isEmpty()){
-                String input = JOptionPane.showInputDialog(this, "Enter a password", "Create Login", JOptionPane.OK_CANCEL_OPTION);
-
-                if(input == null){
-                    return;
-                }
-                else if(input.length() < 8){
-                    JOptionPane.showMessageDialog(this, "Password must be at least 8 characters");
-                }
-                else{
-                    password = input;
-                    String verification = JOptionPane.showInputDialog(this, "Re-enter your password", "Create Login", JOptionPane.OK_CANCEL_OPTION);
-
-                    if(verification == null){
-                        return;
-                    }
-                    else if(!password.equals(verification)){
-                        JOptionPane.showMessageDialog(this, "Passwords must match, try again");
-                        password = "";
-                    }
-                }
-            }
-
-
-            LoginManager.Login temp_login = new LoginManager.Login(username, password);
-            updateLogin(temp_login);
-            LoginManager.add(temp_login);
-            setLoginOptions();
-        }
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,
                 "This will permanently delete all files associated with this user. Are you sure?",
                 "Confirm Delete",
@@ -375,22 +350,7 @@ public class FormGeneratorApp extends javax.swing.JFrame {
             LoginManager.remove(login);
             logout();
         }
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void logout(){
-        home_dir = new File("_default");
-        login = null;
-        display_name = "";
-        jCheckBox1.setSelected(false);
-        setLoginOptions();
-    }
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        dispose();
-        LogFormApp daily_log_form = new LogFormApp();
-        daily_log_form.setLocationRelativeTo(this);
-        daily_log_form.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
     * @param args the command line arguments
@@ -407,13 +367,15 @@ public class FormGeneratorApp extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     // End of variables declaration//GEN-END:variables
 
 }

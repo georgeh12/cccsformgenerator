@@ -8,6 +8,7 @@
  won't be able to choose a bad filetype
 -Let file manager handle extensions and auto names for files
 -Allow login to accept Guest as an option/add a button to login as guest.
+-Don't allow new users to overwrite old users (duh!)
 +print out messages in date order
 +make password *
 +don't make fields go blank on daily log if you switch between voucher and cert
