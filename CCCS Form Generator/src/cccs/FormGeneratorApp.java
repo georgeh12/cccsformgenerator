@@ -35,7 +35,12 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         setLocationRelativeTo(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        if(login == null) jMenu2.setVisible(false);
+        if(login != null){
+            login(login);
+        }
+        else{
+            logout();
+        }
     }
 
     private void login(LoginManager.Login login){
@@ -43,8 +48,9 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         this.login = login;
         display_name = login.getDisplay();
         setTitle("Welcome, " + display_name + "!");
-        jMenu2.setVisible(true);
         jLabel2.setText(display_name);
+        jLabel1.setText("Logged in as:");
+        setLoggedIn(true);
     }
 
     private void logout(){
@@ -52,8 +58,16 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         login = null;
         display_name = "";
         setTitle("Welcome!");
-        jMenu2.setVisible(false);
         jLabel2.setText("");
+        jLabel1.setText("Please login first ^_^");
+        setLoggedIn(false);
+    }
+
+    private void setLoggedIn(boolean logged_in){
+        jMenu2.setVisible(logged_in);
+        jButton1.setVisible(logged_in);
+        jButton2.setVisible(logged_in);
+        jButton3.setVisible(logged_in);
     }
 
     /** This method is called from within the constructor to
