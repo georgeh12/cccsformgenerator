@@ -34,6 +34,8 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        if(login == null) jMenu2.setVisible(false);
     }
 
     private void login(LoginManager.Login login){
@@ -73,7 +75,6 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenu2.setVisible(false);
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
 
