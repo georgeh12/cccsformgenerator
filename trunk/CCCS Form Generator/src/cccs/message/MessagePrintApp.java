@@ -75,7 +75,7 @@ public class MessagePrintApp extends javax.swing.JFrame {
 
             PrintUtilities.printComponent(jPanel1);
 
-            if(i < messages.size())JOptionPane.showMessageDialog(this, "Click OK to continue.");
+            if(i <= messages.size() - 3)JOptionPane.showMessageDialog(this, "Click OK to continue.");
         }
 
         PrintUtilities.enableDoubleBuffering(this);
