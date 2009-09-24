@@ -148,7 +148,17 @@ public class FileManager {
         }
     }
 
+    private static String padPassword(String password){
+        while(password.length() < 8){
+            password += Character.MIN_VALUE;
+        }
+
+        return password;
+    }
+
     private static void saveFile(File dir, String filename, Object my_object, String password){
+        password = padPassword(password);
+
         try{
             SecretKey secret_key =
                     SecretKeyFactory.getInstance("DES").generateSecret(
@@ -184,6 +194,8 @@ public class FileManager {
     }
 
     private static Object loadFile(File dir, String filename, Class my_class, String password){
+        password = padPassword(password);
+
         File file = getFile(dir, filename);
         ObjectInputStream ois = null;
 

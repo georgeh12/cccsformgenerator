@@ -376,6 +376,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CCCS Message Form");
+        setAlwaysOnTop(true);
         setResizable(false);
 
         jSpinner1.setModel(new javax.swing.SpinnerDateModel());
@@ -578,6 +579,7 @@ public class MessageFormApp extends javax.swing.JFrame {
         jMenu3.setText("Options");
         jMenu3.setName("jMenu3"); // NOI18N
 
+        jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("Always On Top");
         jCheckBoxMenuItem1.setName("jCheckBoxMenuItem1"); // NOI18N
         jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {

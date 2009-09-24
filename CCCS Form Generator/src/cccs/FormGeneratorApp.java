@@ -247,8 +247,10 @@ public class FormGeneratorApp extends javax.swing.JFrame {
             if(input1 == JOptionPane.CANCEL_OPTION || input1 == JOptionPane.CLOSED_OPTION){
                 return null;
             }
-            else if(original.length() < 8){
-                JOptionPane.showMessageDialog(this, "Password must be at least 8 characters");
+            /*Password is padded so at least 8 bits are present. Trailing bits
+              are just 0's in char format */
+            else if(original.length() < 1){
+                JOptionPane.showMessageDialog(this, "Password must be at least 1 character");
             }
             else{
                 PasswordDialog dialog2 = new PasswordDialog();
@@ -330,18 +332,27 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void createUser(){
         String username = "";
         String password = "";
         String title =  "Create New User";
 
         if((username = getUsername("Enter a username", title)) != null){
-            if((password = getPassword(title)) != null){
-                LoginManager.Login temp_login = new LoginManager.Login(username, password);
+            if(new File(username).exists() && new File(username).isDirectory()){
+                JOptionPane.showMessageDialog(this, "Username already exists", title, JOptionPane.WARNING_MESSAGE);
+                createUser();
+            }
+            else if((password = getPassword(title)) != null){
+                LoginManager.Login temp_login =
+                        new LoginManager.Login(username, password);
                 login(temp_login);
                 LoginManager.add(temp_login);
             }
         }
+    }
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        createUser();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
