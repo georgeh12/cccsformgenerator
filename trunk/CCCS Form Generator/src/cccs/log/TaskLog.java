@@ -14,14 +14,20 @@ import java.io.*;
 public class TaskLog implements Serializable{
     
     public static class Client implements Serializable{
+        private String client_name = "";
         private int client_id = 0;
 
-        public Client(int client_id){
+        public Client(String client_name, int client_id){
+            this.client_name = client_name;
             this.client_id = client_id;
         }
         
-        public int getClientID(){
-            return client_id;
+        public String getName(){
+            return client_name;
+        }
+
+        public String getID(){
+            return (client_id != 0 ? Integer.toString(client_id) : noID());
         }
 
         public static String noID(){
@@ -29,7 +35,7 @@ public class TaskLog implements Serializable{
         }
 
         public String toString(){
-            return (client_id != 0 ? Integer.toString(client_id) : noID());
+            return getName() + " (" + getID() + ")";
         }
     }
 
@@ -42,14 +48,8 @@ public class TaskLog implements Serializable{
             this.certificate = certificate;
         }
 
-        public String get(){
-            String certificate_string = Long.toString(certificate);
-
-            while(certificate_string.length() < 9){
-                certificate_string = "0" + certificate_string;
-            }
-
-            return certificate_string;
+        public Client get(){
+            return client;
         }
 
         public static long parseCertificate(String certificate){
@@ -69,7 +69,13 @@ public class TaskLog implements Serializable{
         }
 
         public String toString(){
-            return client.toString();
+            String certificate_string = Long.toString(certificate);
+
+            while(certificate_string.length() < 9){
+                certificate_string = "0" + certificate_string;
+            }
+
+            return certificate_string;
         }
     }
 
@@ -82,14 +88,8 @@ public class TaskLog implements Serializable{
             this.voucher = voucher;
         }
 
-        public String get(){
-            String voucher_string = Long.toString(voucher);
-
-            while(voucher_string.length() < 16){
-                voucher_string = "0" + voucher_string;
-            }
-
-            return voucher_string;
+        public Client get(){
+            return client;
         }
 
         public static long parseVoucher(String voucher){
@@ -109,7 +109,13 @@ public class TaskLog implements Serializable{
         }
 
         public String toString(){
-            return client.toString();
+            String voucher_string = Long.toString(voucher);
+
+            while(voucher_string.length() < 16){
+                voucher_string = "0" + voucher_string;
+            }
+
+            return voucher_string;
         }
     }
 
@@ -141,29 +147,20 @@ public class TaskLog implements Serializable{
         this.calendar = calendar;
     }
 
-    public Certificate addCertificate(String client, String certificate){
-        Certificate new_certificate = parseCertificate(client, certificate);
-        certificates.add(new_certificate);
-        return new_certificate;
+    private static Client addClient(String client_name, String client_id){
+        return new Client(client_name,
+                Integer.parseInt((client_id.isEmpty() ? "0" : client_id)));
     }
 
-    public Voucher addVoucher(String client, String voucher){
-        Voucher new_voucher = parseVoucher(client, voucher);
-        vouchers.add(new_voucher);
-        return new_voucher;
-    }
-
-    private static Client addClient(String client_id){
-        return new Client(Integer.parseInt((client_id.isEmpty() ? "0" : client_id)));
-    }
-
-    public static Certificate parseCertificate(String client, String certificate){
-        return new Certificate(addClient(client),
+    public static Certificate parseCertificate(String client_name,
+            String client_id, String certificate){
+        return new Certificate(addClient(client_name, client_id),
                 Certificate.parseCertificate((String)certificate));
     }
 
-    public static Voucher parseVoucher(String client, String voucher){
-        return new Voucher(addClient(client),
+    public static Voucher parseVoucher(String client_name, String client_id,
+            String voucher){
+        return new Voucher(addClient(client_name, client_id),
                 Voucher.parseVoucher((String)voucher));
     }
 

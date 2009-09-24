@@ -43,6 +43,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         daily_log = TaskLogManager.loadFile(calendar);
 
         setTitle(CalendarUtilities.getYearAndDate(calendar));
+
         load();
     }
 
@@ -51,6 +52,8 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     }
 
     private void load(){
+        if(jToggleButton1.isSelected()) jToggleButton1.setSelected(false);
+        
         loadButtonGroup1();
         loadButtonGroup2();
     }
@@ -90,16 +93,16 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     }
 
     private void saveCertificate(int index){
+        TaskLog.Certificate certificate = TaskLog.parseCertificate(
+                getClientName(),
+                getClientID(),
+                getField2());
+
         if(index < 0){
-            jComboBox1.addItem(
-                    daily_log.addCertificate(
-                    getClient(),
-                    getField2()));
+            jComboBox1.addItem(certificate);
+            daily_log.certificates.add(certificate);
         }
         else{
-            TaskLog.Certificate certificate = TaskLog.parseCertificate(
-                    getClient(),
-                    getField2());
             jComboBox1.removeItemAt(index);
             
             daily_log.certificates.set(index, certificate);
@@ -108,32 +111,39 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     }
 
     private void saveVoucher(int index){
+        TaskLog.Voucher voucher = TaskLog.parseVoucher(
+                getClientName(),
+                getClientID(),
+                getField2());
+        
         if(index < 0){
-            jComboBox1.addItem(
-                    daily_log.addVoucher(
-                    getClient(),
-                    getField2()));
+            jComboBox1.addItem(voucher);
+            daily_log.vouchers.add(voucher);
         }
         else{
             jComboBox1.removeItemAt(index);
-            jComboBox1.insertItemAt(TaskLog.parseVoucher(
-                    getClient(),
-                    getField2()),
-                    index);
+            
+            daily_log.vouchers.set(index, voucher);
+            jComboBox1.insertItemAt(voucher, index);
         }
     }
 
-    private String getClient(){
+    private String getClientName(){
         return jTextField2.getText();
     }
 
-    private String getField2(){
+    private String getClientID(){
         return jTextField3.getText();
     }
 
+    private String getField2(){
+        return jTextField4.getText();
+    }
+
     private void clearTextBoxes(){
-        jTextField2.setText("");
         jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField2.setText("");
     }
 
     /** This method is called from within the constructor to
@@ -150,7 +160,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         jRadioButton3 = new javax.swing.JRadioButton();
         jRadioButton4 = new javax.swing.JRadioButton();
         jButton3 = new javax.swing.JButton();
@@ -159,10 +169,12 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -196,7 +208,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         jTextField1.setText("0");
         jTextField1.setName("jTextField1"); // NOI18N
 
-        jTextField2.setName("jTextField2"); // NOI18N
+        jTextField3.setName("jTextField3"); // NOI18N
 
         buttonGroup2.add(jRadioButton3);
         jRadioButton3.setFont(new java.awt.Font("Tahoma", 0, 14));
@@ -219,7 +231,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             }
         });
 
-        jButton3.setFont(new java.awt.Font("SansSerif", 0, 24));
+        jButton3.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jButton3.setText("Add");
         jButton3.setName("jButton3"); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -263,13 +275,13 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         jLabel1.setText("Calls:");
         jLabel1.setName("jLabel1"); // NOI18N
 
-        jTextField3.setName("jTextField3"); // NOI18N
+        jTextField4.setName("jTextField4"); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Client Number: ");
         jLabel2.setName("jLabel2"); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText(" ");
         jLabel3.setName("jLabel3"); // NOI18N
 
@@ -280,6 +292,12 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
                 jToggleButton1ActionPerformed(evt);
             }
         });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("Client Name: ");
+        jLabel4.setName("jLabel4"); // NOI18N
+
+        jTextField2.setName("jTextField2"); // NOI18N
 
         jMenuBar1.setName("jMenuBar1"); // NOI18N
 
@@ -337,14 +355,6 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBox1, 0, 126, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
@@ -355,7 +365,18 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jRadioButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)))
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -371,15 +392,19 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
                         .addComponent(jLabel1)
                         .addComponent(jRadioButton1)
                         .addComponent(jRadioButton2)))
-                .addGap(23, 23, 23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(19, 19, 19)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -443,7 +468,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if(getClient().isEmpty() && getField2().isEmpty()){
+        if(getClientName().isEmpty() && getClientID().isEmpty() && getField2().isEmpty()){
             return;
         }
         
@@ -480,14 +505,16 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             if(jRadioButton3.isSelected()){
                 TaskLog.Certificate certificate =
                         (TaskLog.Certificate)jComboBox1.getSelectedItem();
-                jTextField2.setText(removeNoID(certificate.toString()));
-                jTextField3.setText(certificate.get());
+                jTextField2.setText(certificate.get().getName());
+                jTextField3.setText(removeNoID(certificate.get().getID()));
+                jTextField4.setText(certificate.toString());
             }
             else{
                 TaskLog.Voucher voucher =
                         (TaskLog.Voucher)jComboBox1.getSelectedItem();
-                jTextField2.setText(removeNoID(voucher.toString()));
-                jTextField3.setText(voucher.get());
+                jTextField2.setText(voucher.get().getName());
+                jTextField3.setText(removeNoID(voucher.get().getID()));
+                jTextField4.setText(voucher.toString());
             }
         }
         else{
@@ -586,6 +613,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -598,6 +626,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
 
