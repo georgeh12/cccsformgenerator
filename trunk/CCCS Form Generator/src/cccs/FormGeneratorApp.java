@@ -35,11 +35,11 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         setLocationRelativeTo(this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        if(login != null){
-            login(login);
+        if(login == null){
+            logout();
         }
         else{
-            logout();
+            login(login);
         }
     }
 
@@ -228,7 +228,7 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         String username = "";
         
         while(username.isEmpty()){
-            username = JOptionPane.showInputDialog(this, message, title, JOptionPane.QUESTION_MESSAGE);
+            username = (String)JOptionPane.showInputDialog(this, message, title, JOptionPane.QUESTION_MESSAGE, null, null, System.getProperty("user.name"));
 
             if(username == null){
                 break;
