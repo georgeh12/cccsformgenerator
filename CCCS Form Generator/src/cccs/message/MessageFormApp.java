@@ -134,6 +134,7 @@ public class MessageFormApp extends javax.swing.JFrame {
     private Message save(){
         try{
             if(!PhoneNumber.isEmpty(jTextField3.getText())) jButton1ActionPerformed(null);
+            if(jToggleButton1.isSelected()) jToggleButton1.setSelected(false);
 
             Calendar date = Calendar.getInstance();
             date.setTime((Date)((SpinnerDateModel)jSpinner1.getModel()).getValue());
