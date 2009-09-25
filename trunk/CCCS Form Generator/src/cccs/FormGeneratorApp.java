@@ -50,6 +50,7 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         setTitle("Welcome, " + display_name + "!");
         jLabel2.setText(display_name);
         jLabel1.setText("Logged in as:");
+        jMenuItem1.setText("Logout");
         setLoggedIn(true);
     }
 
@@ -60,6 +61,7 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         setTitle("Welcome!");
         jLabel2.setText("");
         jLabel1.setText("Please login first ^_^");
+        jMenuItem1.setText("Login");
         setLoggedIn(false);
     }
 
@@ -317,7 +319,6 @@ public class FormGeneratorApp extends javax.swing.JFrame {
 
             if(temp_login != null){
                 login(temp_login);
-                jMenuItem1.setText("Logout");
             }
         }
         else{
@@ -327,7 +328,6 @@ public class FormGeneratorApp extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null)){
                 logout();
-                jMenuItem1.setText("Login");
             }
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
