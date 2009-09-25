@@ -2,13 +2,15 @@
 -add 0's in front of dates and time for saved class files
 -add a filechooser to open/save
 -add a delete all saved button to saved class files
--make sure user can't enter _default or illegal microsoft characters as a username value
 -Load last created doc if no name is entered for messages
 -Give messages, faxes, etc unique names for file extensions so file chooser
  won't be able to choose a bad filetype
 -Let file manager handle extensions and auto names for files
 -Allow login to accept Guest as an option/add a button to login as guest.
--Don't allow new users to overwrite old users (duh!)
+-When minimize/exit button is clicked on a window, the window is minimized to
+ the system tray.
++make sure user can't enter illegal microsoft characters as a username value
++Don't allow new users to overwrite old users (duh!)
 +print out messages in date order
 +make password *
 +don't make fields go blank on daily log if you switch between voucher and cert

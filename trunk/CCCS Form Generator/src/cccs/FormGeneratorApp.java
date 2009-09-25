@@ -25,7 +25,7 @@ import cccs.utility.FileManager.LoginManager;
  * @author ghardigg
  */
 public class FormGeneratorApp extends javax.swing.JFrame {
-    static public File home_dir = new File("_default");
+    static public File home_dir = new File("");
     static public LoginManager.Login login = null;
     static public String display_name = "";
 
@@ -233,7 +233,17 @@ public class FormGeneratorApp extends javax.swing.JFrame {
             username = (String)JOptionPane.showInputDialog(this, message, title, JOptionPane.QUESTION_MESSAGE, null, null, System.getProperty("user.name"));
 
             if(username == null){
-                break;
+                return null;
+            }
+            else{
+                for(int i = 0; i < username.length(); i ++){
+                    if(!Character.isLetterOrDigit(username.charAt(i))){
+                        JOptionPane.showMessageDialog(this,
+                                "Username can only contain letters and numbers",
+                                "Invalid Username", JOptionPane.WARNING_MESSAGE);
+                        return null;
+                    }
+                }
             }
         }
 
