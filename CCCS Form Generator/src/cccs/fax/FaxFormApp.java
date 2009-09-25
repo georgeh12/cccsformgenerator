@@ -178,8 +178,6 @@ public class FaxFormApp extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CCCS Fax Form");
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(FaxFormApp.class);
-        setBackground(resourceMap.getColor("background")); // NOI18N
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -234,8 +232,7 @@ public class FaxFormApp extends javax.swing.JFrame {
         jTextField1.setName("jTextField1"); // NOI18N
         jTextField1.setNextFocusableComponent(jTextField3);
 
-        jTextField2.setEditable(false);
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField2.setText("CCCS of MD & DE");
         jTextField2.setBorder(new BottomBorder(Color.BLACK));
@@ -293,8 +290,7 @@ public class FaxFormApp extends javax.swing.JFrame {
         jTextArea2.setName("jTextArea2"); // NOI18N
         jScrollPane2.setViewportView(jTextArea2);
 
-        jTextField6.setEditable(false);
-        jTextField6.setFont(new java.awt.Font("Tahoma", 0, 12));
+        jTextField6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField6.setBorder(new BottomBorder(Color.BLACK));
         jTextField6.setName("jTextField6"); // NOI18N

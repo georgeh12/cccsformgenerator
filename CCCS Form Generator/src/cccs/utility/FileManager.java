@@ -149,9 +149,9 @@ public class FileManager {
     }
 
     private static String padPassword(String password){
-        while(password.length() < 8){
+        do {
             password += Character.MIN_VALUE;
-        }
+        } while(password.length() < 32);
 
         return password;
     }
@@ -160,9 +160,7 @@ public class FileManager {
         password = padPassword(password);
 
         try{
-            SecretKey secret_key =
-                    SecretKeyFactory.getInstance("DES").generateSecret(
-                    new DESKeySpec(password.getBytes()));
+            SecretKey secret_key = new SecretKeySpec(password.getBytes(), "AES");
 
             File file = getFile(dir, filename);
             if(!dir.exists()) dir.mkdir();
@@ -173,13 +171,13 @@ public class FileManager {
             file.setWritable(true);
 
             // Create Cipher
-            Cipher desCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-            desCipher.init(Cipher.ENCRYPT_MODE, secret_key);
+            Cipher aesCipher = Cipher.getInstance("AES");
+            aesCipher.init(Cipher.ENCRYPT_MODE, secret_key);
 
             ObjectOutputStream oos = new ObjectOutputStream(
                     new CipherOutputStream(
                     new BufferedOutputStream(new FileOutputStream(file)),
-                    desCipher));
+                    aesCipher));
             oos.writeObject(my_object);
             oos.flush();
             oos.close();
@@ -200,16 +198,14 @@ public class FileManager {
         ObjectInputStream ois = null;
 
         try{
-            SecretKey secret_key =
-                    SecretKeyFactory.getInstance("DES").generateSecret(
-                    new DESKeySpec(password.getBytes()));
-
+            SecretKey secret_key = new SecretKeySpec(password.getBytes(), "AES");
+            
             if(file.exists() && dir.exists()){
                 // Create Cipher
-                Cipher desCipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-                desCipher.init(Cipher.DECRYPT_MODE, secret_key);
+                Cipher aesCipher = Cipher.getInstance("AES");
+                aesCipher.init(Cipher.DECRYPT_MODE, secret_key);
 
-                ois = new ObjectInputStream(new CipherInputStream(new BufferedInputStream(new FileInputStream(file)), desCipher));
+                ois = new ObjectInputStream(new CipherInputStream(new BufferedInputStream(new FileInputStream(file)), aesCipher));
                 Object my_object = ois.readObject();
 
                 ois.close();
