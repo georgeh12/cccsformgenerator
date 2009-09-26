@@ -11,23 +11,32 @@
 
 package cccs.utility;
 
+import java.awt.event.*;
+
 /**
  *
  * @author George
  */
-public class PasswordDialog extends javax.swing.JPanel {
+public class PasswordDialog extends javax.swing.JPanel{
+    public class PasswordListener extends ComponentAdapter{
+        public void componentShown(ComponentEvent e) {
+            jPasswordField1.grabFocus();
+            //jPasswordField1.requestFocus();
+        }
+    }
 
     /** Creates new form PasswordDialog */
     public PasswordDialog() {
         initComponents();
     }
 
-    public String getPassword(){
-        return String.copyValueOf(jPasswordField1.getPassword());
+    public PasswordDialog(String label) {
+        this();
+        jLabel1.setText(label);
     }
 
-    public void setLabel(String label){
-        jLabel1.setText(label);
+    public String getPassword(){
+        return String.copyValueOf(jPasswordField1.getPassword());
     }
 
     /** This method is called from within the constructor to

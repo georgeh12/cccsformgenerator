@@ -149,9 +149,9 @@ public class FileManager {
     }
 
     private static String padPassword(String password){
-        do {
+        while(password.length() < 16){
             password += Character.MIN_VALUE;
-        } while(password.length() < 32);
+        }
 
         return password;
     }
@@ -182,6 +182,10 @@ public class FileManager {
             oos.flush();
             oos.close();
             file.setWritable(false);
+        }
+        //wrong password, or corrupted file
+        catch(StreamCorruptedException e){
+            e.printStackTrace();
         }
         catch(IOException e){
             e.printStackTrace();
