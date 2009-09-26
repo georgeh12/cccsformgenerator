@@ -250,24 +250,37 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         return username;
     }
 
+    private int showPasswordDialog(PasswordDialog password_dialog){
+        JOptionPane pane = new JOptionPane(password_dialog);
+        pane.setOptionType(JOptionPane.OK_CANCEL_OPTION);
+        pane.setMessageType(JOptionPane.QUESTION_MESSAGE);
+        JDialog dialog = pane.createDialog(this, "Authenticating");
+        dialog.addComponentListener(password_dialog.new PasswordListener());
+        dialog.setVisible(true);
+
+        return (pane.getValue() == null ? JOptionPane.CLOSED_OPTION : (Integer)pane.getValue());
+    }
+
     private String getPassword(String title){
         while(true){
             PasswordDialog dialog1 = new PasswordDialog();
-            int input1 = JOptionPane.showConfirmDialog(this, dialog1, "Enter a password", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int input1 = showPasswordDialog(dialog1);
             String original = dialog1.getPassword();
 
             if(input1 == JOptionPane.CANCEL_OPTION || input1 == JOptionPane.CLOSED_OPTION){
                 return null;
             }
             /*Password is padded so at least 8 bits are present. Trailing bits
-              are just 0's in char format */
+              are Character.MIN_VALUE */
             else if(original.length() < 1){
                 JOptionPane.showMessageDialog(this, "Password must be at least 1 character");
             }
+            else if(original.length() > 16){
+                JOptionPane.showMessageDialog(this, "Password can't be more than 16 characters");
+            }
             else{
                 PasswordDialog dialog2 = new PasswordDialog();
-                dialog2.setLabel("Re-enter your password");
-                int input2 = JOptionPane.showConfirmDialog(this, dialog2, "Create Login", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                int input2 = showPasswordDialog(dialog2);
                 String verification = dialog2.getPassword();
 
                 if(input2 == JOptionPane.CANCEL_OPTION || input2 == JOptionPane.CLOSED_OPTION){
@@ -293,8 +306,8 @@ public class FormGeneratorApp extends javax.swing.JFrame {
         else{
             while(password.isEmpty()){
                 PasswordDialog dialog = new PasswordDialog();
-                int input = JOptionPane.showConfirmDialog(this, dialog, "Authenticating", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-
+                int input = showPasswordDialog(dialog);
+                
                 if(input == JOptionPane.OK_OPTION){
                     password = dialog.getPassword();
                 }
