@@ -580,7 +580,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             String date = CalendarUtilities.formatDate(calendar);
             URI email = new URI("mailto:thoffman@cccs-inc.org?subject=" +
                     name + "'s%20Task%20Log%20for%20" + date +
-                    "&body=" + daily_log.toString().replace(" ", "%20").replace("\r\n", "%0D%0A"));
+                    "&body=" + daily_log.toString().replace("%", "%25").replace(" ", "%20").replace("\r\n", "%0D%0A"));
             Desktop.getDesktop().mail(email);
         }
         catch(URISyntaxException e){
