@@ -133,6 +133,10 @@ public class TaskLog implements Serializable{
         public void dec(){
             calls--;
         }
+
+        public String toString(){
+            return Integer.toString(get());
+        }
     }
 
     public Calls calls_in = new Calls();
@@ -171,27 +175,31 @@ public class TaskLog implements Serializable{
         log.append("Calls out: " + calls_out.get() + "\r\n");
 
         log.append("\r\nClient completion: ");
-        if(!certificates.isEmpty()) log.append(certificates.get(0).toString());
-        for(int i = 1; i < certificates.size(); i ++){
-            log.append(", " + certificates.get(i).toString());
+        if(!certificates.isEmpty()){
+            for(int i = 1; i < certificates.size(); i ++){
+                log.append(", " + certificates.get(i).get());
+            }
         }
 
         log.append("\r\nCertificates issued: ");
-        if(!certificates.isEmpty()) log.append(certificates.get(0).get());
-        for(int i = 1; i < certificates.size(); i ++){
-            log.append(", " + certificates.get(i).get());
+        if(!certificates.isEmpty()){
+            for(int i = 0; i < certificates.size(); i ++){
+                log.append(", " + certificates.get(i).toString());
+            }
         }
 
         log.append("\r\n\r\nClients waiving fee: ");
-        if(!vouchers.isEmpty()) log.append(vouchers.get(0).toString());
-        for(int i = 1; i < vouchers.size(); i ++){
-            log.append(", " + vouchers.get(i).toString());
+        if(!vouchers.isEmpty()){
+            for(int i = 0; i < vouchers.size(); i ++){
+                log.append(", " + vouchers.get(i).get());
+            }
         }
 
         log.append("\r\nVouchers issued: ");
-        if(!vouchers.isEmpty()) log.append(vouchers.get(0).get());
-        for(int i = 1; i < vouchers.size(); i ++){
-            log.append(", " + vouchers.get(i).get());
+        if(!vouchers.isEmpty()){
+            for(int i = 0; i < vouchers.size(); i ++){
+                log.append(", " + vouchers.get(i).toString());
+            }
         }
 
         return log.toString();
