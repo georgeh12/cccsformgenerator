@@ -46,6 +46,8 @@ public class MessagePrintApp extends javax.swing.JFrame {
                         "&body=" +
                         message.toString().replace("%", "%25").replace(" ", "%20").replace("\r\n", "%0D%0A"));
                 Desktop.getDesktop().mail(email);
+                
+                JOptionPane.showMessageDialog(this, "Click OK to continue.");
             }
         }
         catch(URISyntaxException e){
