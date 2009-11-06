@@ -12,7 +12,6 @@
 
 package cccs.message;
 import cccs.utility.*;
-import cccs.*;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.io.IOException;
@@ -26,19 +25,36 @@ import javax.swing.*;
  * @author George
  */
 public class MessagePrintApp extends javax.swing.JFrame {
-    Iterator iter = null;
-    
     /** Creates new form MessagePrintApp */
     public MessagePrintApp() {
         initComponents();
     }
 
     private String formatMailto(String s){
-        return s.replace("%", "%25").replace(" ", "%20").replace("\r\n", "%0D%0A").replace(":", "%3A").replace("/", "%2F").replace("-", "2D").replace(",", "2C");
+        return s.replace("%", "%25").replace(" ", "%20").replace("\r\n", "%0D%0A").replace(":", "%3A").replace("/", "%2F").replace("-", "%2D").replace(",", "%2C");
     }
 
     public void email(ArrayList<Message> messages){
-        iter = messages.iterator();
+        try{
+            String date = CalendarUtilities.formatDate(Calendar.getInstance());
+            for(Message message: messages){
+                URI email = new URI("mailto:thoffman@cccs-inc.org"
+                        + "?subject=" + formatMailto(printHeader(message))
+                        + "&cc=edickerson@cccs-inc.org" + ",ninah@cccs-inc.org" + ",dbooker@cccs-inc.org"
+                        + "&body=" + formatMailto(printMessage(message))
+                        );
+                jTextArea1.setText(printMessage(message));
+                Desktop.getDesktop().mail(email);
+            }
+        }
+        catch(URISyntaxException e){
+            e.printStackTrace();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        } finally {
+            dispose();
+        }
     }
 
     public void print(ArrayList<Message> messages){
@@ -113,7 +129,7 @@ public class MessagePrintApp extends javax.swing.JFrame {
                     "\r\nAccount Number: " + creditor_info.getAcctNumber());
         }
 
-        print.append("\nClient Number: " + (message.getID() != 0 ? message.getID() : "") + "          Client Name: " +
+        print.append("\r\nClient Number: " + (message.getID() != 0 ? message.getID() : "") + "          Client Name: " +
                 message.getName());
 
         ArrayList<PhoneNumber> contacts = message.getContacts();
@@ -147,7 +163,6 @@ public class MessagePrintApp extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -207,40 +222,25 @@ public class MessagePrintApp extends javax.swing.JFrame {
         jTextField3.setBorder(null);
         jTextField3.setName("jTextField3"); // NOI18N
 
-        jButton1.setText("Click Here");
-        jButton1.setName("jButton1"); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1)))
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addGap(7, 7, 7)
+                .addGap(41, 41, 41)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -269,38 +269,6 @@ public class MessagePrintApp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Message message = null;
-        
-        if(iter.hasNext()){
-            message = (Message)iter.next();
-        }
-        else{
-            dispose();
-        }
-
-        try{
-            String date = CalendarUtilities.formatDate(Calendar.getInstance());
-            //for(Message message: messages){
-                URI email = new URI("mailto:thoffman@cccs-inc.org"
-                        + "?subject=" + formatMailto(printHeader(message))
-                        + "&cc=edickerson@cccs-inc.org" + ",ninah@cccs-inc.org" + ",dbooker@cccs-inc.org"
-                        //+ "&body=" + formatMailto(printMessage(message))
-                        );
-                jTextArea1.setText(printMessage(message));
-                Desktop.getDesktop().mail(email);
-            //}
-        }
-        catch(URISyntaxException e){
-            e.printStackTrace();
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        } finally {
-            //dispose();
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     /**
     * @param args the command line arguments
     */
@@ -313,7 +281,6 @@ public class MessagePrintApp extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
