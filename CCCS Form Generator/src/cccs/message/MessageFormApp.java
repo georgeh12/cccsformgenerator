@@ -18,8 +18,11 @@ import cccs.*;
 import javax.swing.*;
 import java.util.*;
 import cccs.message.Message.*;
+import java.awt.Desktop;
 import java.io.*;
 import java.awt.event.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  *
@@ -52,6 +55,26 @@ public class MessageFormApp extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         showCreditorFields(false);
+    }
+
+    private void email(String filename){
+        try{
+            saveFile(filename);
+            File file = FileManager.getFile(new File(FormGeneratorApp.home_dir + "\\" + "Message"), filename);
+            if(file.exists()){
+
+                MessagePrintApp print_screen = new MessagePrintApp();
+                print_screen.setLocationRelativeTo(this);
+                print_screen.setVisible(true);
+
+                ArrayList<Message> messages = loadFile(filename);
+
+                print_screen.email(messages);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void print(String filename){
@@ -364,6 +387,7 @@ public class MessageFormApp extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -533,6 +557,15 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jMenu4.setText("File");
         jMenu4.setName("jMenu4"); // NOI18N
+
+        jMenuItem7.setText("Email");
+        jMenuItem7.setName("jMenuItem7"); // NOI18N
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem7);
 
         jMenuItem6.setText("Print");
         jMenuItem6.setName("jMenuItem6"); // NOI18N
@@ -961,6 +994,10 @@ public class MessageFormApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jRadioButton10ItemStateChanged
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        email(CalendarUtilities.getFFDateAndTime());
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1002,6 +1039,7 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton10;
     private javax.swing.JRadioButton jRadioButton2;

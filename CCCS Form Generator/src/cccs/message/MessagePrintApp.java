@@ -11,10 +11,13 @@
  */
 
 package cccs.message;
-import cccs.utility.PhoneNumber;
-import cccs.utility.PrintUtilities;
+import cccs.utility.*;
 import cccs.*;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 import javax.swing.*;
 
@@ -27,6 +30,30 @@ public class MessagePrintApp extends javax.swing.JFrame {
     /** Creates new form MessagePrintApp */
     public MessagePrintApp() {
         initComponents();
+    }
+
+    public void email(ArrayList<Message> messages){
+        this.setVisible(false);
+        
+        try{
+            String name = FormGeneratorApp.display_name;
+            String date = CalendarUtilities.formatDate(Calendar.getInstance());
+            for(Message message: messages){
+                URI email = new URI("mailto:thoffman@cccs-inc.org" +
+                        "?subject=" +
+                        "Message%20received%20on%20" + date + "%20 by " + name +
+                        "&cc=edickerson@cccs-inc.org" + ",ninah@cccs-inc.org" + ",dbooker@cccs-inc.org" +
+                        "&body=" +
+                        message.toString().replace("%", "%25").replace(" ", "%20").replace("\r\n", "%0D%0A"));
+                Desktop.getDesktop().mail(email);
+            }
+        }
+        catch(URISyntaxException e){
+            e.printStackTrace();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void print(ArrayList<Message> messages){
