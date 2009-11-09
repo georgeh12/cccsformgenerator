@@ -37,7 +37,8 @@ public class MessagePrintApp extends javax.swing.JFrame {
     public void email(ArrayList<Message> messages){
         try{
             String date = CalendarUtilities.formatDate(Calendar.getInstance());
-            for(Message message: messages){
+            for(int i = messages.size() - 1; i >= 0; i--){
+                Message message = messages.get(i);
                 URI email = new URI("mailto:thoffman@cccs-inc.org"
                         + "?subject=" + formatMailto(printHeader(message))
                         + "&cc=edickerson@cccs-inc.org" + ",ninah@cccs-inc.org" + ",dbooker@cccs-inc.org"
