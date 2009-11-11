@@ -147,6 +147,7 @@ public class Message implements Serializable, Comparable {
         return creditor_info;
     }
 
+    @Override
     public String toString(){
         return name + " @ " + formatDay() + ", " + formatDate() + " " +
                 formatTime();
@@ -157,9 +158,7 @@ public class Message implements Serializable, Comparable {
             return 0;
         }
         else{
-            return dept.compareTo(((Message)o).dept) == 0 ?
-                date.compareTo((Calendar)((Message)o).date) :
-                dept.compareTo(((Message)o).dept);
+            return date.compareTo(((Message)o).date);
         }
     }
 }
