@@ -36,7 +36,6 @@ public class MessagePrintApp extends javax.swing.JFrame {
 
     public void email(ArrayList<Message> messages) {
         try{
-            String date = CalendarUtilities.formatDate(Calendar.getInstance());
             for(int i = messages.size() - 1; i >= 0; i--){
                 Message message = messages.get(i);
                 URI email = new URI("mailto:thoffman@cccs-inc.org"
@@ -45,7 +44,13 @@ public class MessagePrintApp extends javax.swing.JFrame {
                         + "&body=" + formatMailto(printMessage(message))
                         );
                 Desktop.getDesktop().mail(email);
-                Thread.sleep(250);
+
+                if(i == messages.size() - 1){
+                    JOptionPane.showMessageDialog(this, "Click OK when the first e-mail has finished loading.");
+                }
+                else{
+                    Thread.sleep(250);
+                }
             }
         }
         catch(InterruptedException e){
