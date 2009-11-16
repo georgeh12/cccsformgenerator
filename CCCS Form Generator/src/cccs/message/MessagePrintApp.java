@@ -31,7 +31,7 @@ public class MessagePrintApp extends javax.swing.JFrame {
     }
 
     private String formatMailto(String s){
-        return s.replace("%", "%25").replace(" ", "%20").replace("\r\n", "%0D%0A").replace(":", "%3A").replace("/", "%2F").replace("-", "%2D").replace(",", "%2C");
+        return s.replace("%", "%25").replace(" ", "%20").replace("\r\n", "%0D%0A").replace(":", "%3A").replace("/", "%2F").replace("-", "%2D").replace(",", "%2C").replace("#", "%23");
     }
 
     public void email(ArrayList<Message> messages) {
@@ -49,12 +49,14 @@ public class MessagePrintApp extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Click OK when the first e-mail has finished loading.");
                 }
                 else{
-                    Thread.sleep(250);
+                    try{
+                        Thread.sleep(250);
+                    }
+                    catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
                 }
             }
-        }
-        catch(InterruptedException e){
-            e.printStackTrace();
         }
         catch(URISyntaxException e){
             e.printStackTrace();
