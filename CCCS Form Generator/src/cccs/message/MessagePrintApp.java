@@ -38,9 +38,10 @@ public class MessagePrintApp extends javax.swing.JFrame {
         try{
             for(int i = messages.size() - 1; i >= 0; i--){
                 Message message = messages.get(i);
-                URI email = new URI("mailto:thoffman@cccs-inc.org"
+                URI email = new URI("mailto:" + MessageFormApp.getTo()
                         + "?subject=" + formatMailto(printHeader(message))
-                        + "&cc=edickerson@cccs-inc.org" + ",ninah@cccs-inc.org" + ",dbooker@cccs-inc.org"
+                        + "&cc=" + MessageFormApp.getCC()
+                        + "&bcc=" + MessageFormApp.getBCC()
                         + "&body=" + formatMailto(printMessage(message))
                         );
                 Desktop.getDesktop().mail(email);

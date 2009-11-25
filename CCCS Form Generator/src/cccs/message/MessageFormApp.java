@@ -18,11 +18,9 @@ import cccs.*;
 import javax.swing.*;
 import java.util.*;
 import cccs.message.Message.*;
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.*;
 import java.awt.event.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  *
@@ -49,12 +47,42 @@ public class MessageFormApp extends javax.swing.JFrame {
         }
     }
 
+    private static ArrayList<String> recipients = null;
+
     /** Creates new form CCCSMessageFormGenerator */
     public MessageFormApp() {
         initComponents();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         showCreditorFields(false);
+
+        recipients = (ArrayList<String>)FileManager.loadFile(FormGeneratorApp.login, getFile("config"), ArrayList.class);
+        if(recipients == null){
+            setDefaultRecipients();
+        }
+    }
+
+    private static void setDefaultRecipients(){
+        setRecipients("thoffman@cccs-inc.org",
+                "edickerson@cccs-inc.org,ninah@cccs-inc.org,dbooker@cccs-inc.org",
+                "");
+    }
+    private static void setRecipients(String to, String cc, String bcc){
+        recipients = new ArrayList<String>();
+        recipients.add(to);
+        recipients.add(cc);
+        recipients.add(bcc);
+        
+        FileManager.saveFile(FormGeneratorApp.login, getFile("config"), recipients);
+    }
+    static String getTo(){
+        return recipients.get(0);
+    }
+    static String getCC(){
+        return recipients.get(1);
+    }
+    static String getBCC(){
+        return recipients.get(2);
     }
 
     private void email(String filename){
@@ -159,13 +187,24 @@ public class MessageFormApp extends javax.swing.JFrame {
             if(!PhoneNumber.isEmpty(jTextField3.getText())) jButton1ActionPerformed(null);
             if(jToggleButton1.isSelected()) jToggleButton1.setSelected(false);
 
-            Calendar date = Calendar.getInstance();
-            date.setTime((Date)((SpinnerDateModel)jSpinner1.getModel()).getValue());
-            Calendar time = Calendar.getInstance();
-            time.setTime((Date)((SpinnerDateModel)jSpinner2.getModel()).getValue());
-            date.set(Calendar.HOUR, time.get(Calendar.HOUR));
-            date.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
-            date.set(Calendar.AM_PM, time.get(Calendar.AM_PM));
+            Calendar combined = Calendar.getInstance();
+
+            //set date
+            Calendar temp = Calendar.getInstance();
+            temp.setTime((Date)((SpinnerDateModel)spinner_month.getModel()).getValue());
+            combined.set(Calendar.MONTH, temp.get(Calendar.MONTH));
+            temp.setTime((Date)((SpinnerDateModel)spinner_month.getModel()).getValue());
+            combined.set(Calendar.DAY_OF_MONTH, temp.get(Calendar.DAY_OF_MONTH));
+            temp.setTime((Date)((SpinnerDateModel)spinner_month.getModel()).getValue());
+            combined.set(Calendar.YEAR, temp.get(Calendar.YEAR));
+
+            //set time
+            temp.setTime((Date)((SpinnerDateModel)spinner_hour.getModel()).getValue());
+            combined.set(Calendar.HOUR, temp.get(Calendar.HOUR));
+            temp.setTime((Date)((SpinnerDateModel)spinner_minute.getModel()).getValue());
+            combined.set(Calendar.MINUTE, temp.get(Calendar.MINUTE));
+            temp.setTime((Date)((SpinnerDateModel)spinner_ampm.getModel()).getValue());
+            combined.set(Calendar.AM_PM, temp.get(Calendar.AM_PM));
 
             CallFrom call_from = CallFrom.Other;
             CreditorInfo creditor_info = null;
@@ -203,7 +242,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
             StringBuffer message = new StringBuffer(jTextArea1.getText());
 
-            Message saved_message = new Message(date, call_from, dept, name, id,
+            Message saved_message = new Message(combined, call_from, dept, name, id,
                     contacts, message, creditor_info);
 
             if(getCurrentIndex() == -1){
@@ -233,8 +272,8 @@ public class MessageFormApp extends javax.swing.JFrame {
     private void load(Message message){
         try{
             if(message.getDate() != null){
-                jSpinner1.getModel().setValue(message.getDate().getTime());
-                jSpinner2.getModel().setValue(message.getDate().getTime());
+                spinner_month.getModel().setValue(message.getDate().getTime());
+                spinner_hour.getModel().setValue(message.getDate().getTime());
             }
 
             jTextField4.setText("");
@@ -298,7 +337,7 @@ public class MessageFormApp extends javax.swing.JFrame {
         }
     }
 
-    private File getFile(String filename){
+    private static File getFile(String filename){
         return new File("Message\\" + filename);
     }
 
@@ -348,8 +387,8 @@ public class MessageFormApp extends javax.swing.JFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         buttonGroup3 = new javax.swing.ButtonGroup();
         buttonGroup4 = new javax.swing.ButtonGroup();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
+        spinner_month = new javax.swing.JSpinner();
+        spinner_hour = new javax.swing.JSpinner();
         jComboBox1 = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
@@ -384,6 +423,14 @@ public class MessageFormApp extends javax.swing.JFrame {
         jLabel9.setVisible(false);
         jTextField7 = new javax.swing.JTextField();
         jTextField7.setVisible(false);
+        jLabel10 = new javax.swing.JLabel();
+        spinner_minute = new javax.swing.JSpinner();
+        spinner_ampm = new javax.swing.JSpinner();
+        spinner_day = new javax.swing.JSpinner();
+        spinner_year = new javax.swing.JSpinner();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
@@ -395,6 +442,8 @@ public class MessageFormApp extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
@@ -404,13 +453,13 @@ public class MessageFormApp extends javax.swing.JFrame {
         setAlwaysOnTop(true);
         setResizable(false);
 
-        jSpinner1.setModel(new javax.swing.SpinnerDateModel());
-        jSpinner1.setEditor(new javax.swing.JSpinner.DateEditor(jSpinner1, "MM/dd/yy"));
-        jSpinner1.setName("jSpinner1"); // NOI18N
+        spinner_month.setModel(new javax.swing.SpinnerDateModel());
+        spinner_month.setEditor(new javax.swing.JSpinner.DateEditor(spinner_month, "MM"));
+        spinner_month.setName("spinner_month"); // NOI18N
 
-        jSpinner2.setModel(new javax.swing.SpinnerDateModel());
-        jSpinner2.setEditor(new javax.swing.JSpinner.DateEditor(jSpinner2, "hh:mm a"));
-        jSpinner2.setName("jSpinner2"); // NOI18N
+        spinner_hour.setModel(new javax.swing.SpinnerDateModel());
+        spinner_hour.setEditor(new javax.swing.JSpinner.DateEditor(spinner_hour, "hh"));
+        spinner_hour.setName("spinner_hour"); // NOI18N
 
         jComboBox1.setName("jComboBox1"); // NOI18N
 
@@ -544,6 +593,38 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jTextField7.setName("jTextField7"); // NOI18N
 
+        jLabel10.setFont(new java.awt.Font("Courier New", 1, 11)); // NOI18N
+        jLabel10.setText(":");
+        jLabel10.setName("jLabel10"); // NOI18N
+
+        spinner_minute.setModel(new javax.swing.SpinnerDateModel());
+        spinner_minute.setEditor(new javax.swing.JSpinner.DateEditor(spinner_minute, "mm"));
+        spinner_minute.setName("spinner_minute"); // NOI18N
+
+        spinner_ampm.setModel(new javax.swing.SpinnerDateModel());
+        spinner_ampm.setEditor(new javax.swing.JSpinner.DateEditor(spinner_ampm, "a"));
+        spinner_ampm.setName("spinner_ampm"); // NOI18N
+
+        spinner_day.setModel(new javax.swing.SpinnerDateModel());
+        spinner_day.setEditor(new javax.swing.JSpinner.DateEditor(spinner_day, "dd"));
+        spinner_day.setName("spinner_day"); // NOI18N
+
+        spinner_year.setModel(new javax.swing.SpinnerDateModel());
+        spinner_year.setEditor(new javax.swing.JSpinner.DateEditor(spinner_year, "yyyy"));
+        spinner_year.setName("spinner_year"); // NOI18N
+
+        jLabel11.setFont(new java.awt.Font("Courier New", 1, 11)); // NOI18N
+        jLabel11.setText("/");
+        jLabel11.setName("jLabel11"); // NOI18N
+
+        jLabel12.setFont(new java.awt.Font("Courier New", 1, 11)); // NOI18N
+        jLabel12.setText("/");
+        jLabel12.setName("jLabel12"); // NOI18N
+
+        jLabel13.setFont(new java.awt.Font("Courier New", 1, 11)); // NOI18N
+        jLabel13.setText(" ");
+        jLabel13.setName("jLabel13"); // NOI18N
+
         jMenuBar1.setName("jMenuBar1"); // NOI18N
 
         jMenu2.setText("Continue");
@@ -623,6 +704,24 @@ public class MessageFormApp extends javax.swing.JFrame {
         });
         jMenu3.add(jCheckBoxMenuItem1);
 
+        jMenuItem8.setText("Set E-mail Recipients");
+        jMenuItem8.setName("jMenuItem8"); // NOI18N
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem8);
+
+        jMenuItem9.setText("Reset E-mail Recipients");
+        jMenuItem9.setName("jMenuItem9"); // NOI18N
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem9);
+
         jMenuItem1.setText("Save Session");
         jMenuItem1.setName("jMenuItem1"); // NOI18N
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -661,82 +760,112 @@ public class MessageFormApp extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(spinner_hour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinner_minute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinner_ampm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRadioButton8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRadioButton5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton7))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jToggleButton1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jRadioButton8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jRadioButton5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton7))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jRadioButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spinner_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
+                        .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                        .addComponent(spinner_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                        .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(spinner_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinner_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel11)
+                    .addComponent(spinner_day, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12)
+                    .addComponent(spinner_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spinner_hour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel10)
+                    .addComponent(spinner_minute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13)
+                    .addComponent(spinner_ampm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButton1)
@@ -787,8 +916,8 @@ public class MessageFormApp extends javax.swing.JFrame {
                     .addComponent(jToggleButton1)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -998,6 +1127,68 @@ public class MessageFormApp extends javax.swing.JFrame {
         email(CalendarUtilities.getFFDateAndTime());
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        JPanel message = new JPanel();
+
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        JLabel label_to = new JLabel("To:");
+        layout.addLayoutComponent(label_to, constraints);
+        constraints.gridx = 1;
+        JTextField field_to = new JTextField();
+        field_to.setColumns(20);
+        field_to.setText(getTo());
+        layout.addLayoutComponent(field_to, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        JLabel label_cc = new JLabel("CC:");
+        layout.addLayoutComponent(label_cc, constraints);
+        constraints.gridx = 1;
+        JTextField field_cc = new JTextField();
+        field_cc.setColumns(20);
+        field_cc.setText(getCC());
+        layout.addLayoutComponent(field_cc, constraints);
+
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        JLabel label_bcc = new JLabel("BCC:");
+        layout.addLayoutComponent(label_bcc, constraints);
+        constraints.gridx = 1;
+        JTextField field_bcc = new JTextField();
+        field_bcc.setColumns(20);
+        field_bcc.setText(getBCC());
+        layout.addLayoutComponent(field_bcc, constraints);
+
+        message.add(label_to);
+        message.add(field_to);
+        message.add(label_cc);
+        message.add(field_cc);
+        message.add(label_bcc);
+        message.add(field_bcc);
+        message.setLayout(layout);
+
+        if(JOptionPane.OK_OPTION == JOptionPane.showConfirmDialog(this,
+                message,
+                "Email Targets",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE)){
+            setRecipients(field_to.getText(), field_cc.getText(), field_bcc.getText());
+        }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        if(JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,
+                "Are you sure?",
+                "Continue?",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)){
+            setDefaultRecipients();
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1019,6 +1210,10 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1040,6 +1235,8 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton10;
     private javax.swing.JRadioButton jRadioButton2;
@@ -1051,8 +1248,6 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton8;
     private javax.swing.JRadioButton jRadioButton9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
@@ -1062,6 +1257,12 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JSpinner spinner_ampm;
+    private javax.swing.JSpinner spinner_day;
+    private javax.swing.JSpinner spinner_hour;
+    private javax.swing.JSpinner spinner_minute;
+    private javax.swing.JSpinner spinner_month;
+    private javax.swing.JSpinner spinner_year;
     // End of variables declaration//GEN-END:variables
 
 }
