@@ -193,9 +193,9 @@ public class MessageFormApp extends javax.swing.JFrame {
             Calendar temp = Calendar.getInstance();
             temp.setTime((Date)((SpinnerDateModel)spinner_month.getModel()).getValue());
             combined.set(Calendar.MONTH, temp.get(Calendar.MONTH));
-            temp.setTime((Date)((SpinnerDateModel)spinner_month.getModel()).getValue());
+            temp.setTime((Date)((SpinnerDateModel)spinner_day.getModel()).getValue());
             combined.set(Calendar.DAY_OF_MONTH, temp.get(Calendar.DAY_OF_MONTH));
-            temp.setTime((Date)((SpinnerDateModel)spinner_month.getModel()).getValue());
+            temp.setTime((Date)((SpinnerDateModel)spinner_year.getModel()).getValue());
             combined.set(Calendar.YEAR, temp.get(Calendar.YEAR));
 
             //set time
