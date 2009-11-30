@@ -274,6 +274,10 @@ public class MessageFormApp extends javax.swing.JFrame {
             if(message.getDate() != null){
                 spinner_month.getModel().setValue(message.getDate().getTime());
                 spinner_hour.getModel().setValue(message.getDate().getTime());
+                spinner_day.getModel().setValue(message.getDate().getTime());
+                spinner_minute.getModel().setValue(message.getDate().getTime());
+                spinner_ampm.getModel().setValue(message.getDate().getTime());
+                spinner_year.getModel().setValue(message.getDate().getTime());
             }
 
             jTextField4.setText("");
