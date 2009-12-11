@@ -597,7 +597,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jTextField7.setName("jTextField7"); // NOI18N
 
-        jLabel10.setFont(new java.awt.Font("Courier New", 1, 11)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Courier New", 1, 11));
         jLabel10.setText(":");
         jLabel10.setName("jLabel10"); // NOI18N
 
@@ -617,15 +617,15 @@ public class MessageFormApp extends javax.swing.JFrame {
         spinner_year.setEditor(new javax.swing.JSpinner.DateEditor(spinner_year, "yyyy"));
         spinner_year.setName("spinner_year"); // NOI18N
 
-        jLabel11.setFont(new java.awt.Font("Courier New", 1, 11)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Courier New", 1, 11));
         jLabel11.setText("/");
         jLabel11.setName("jLabel11"); // NOI18N
 
-        jLabel12.setFont(new java.awt.Font("Courier New", 1, 11)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Courier New", 1, 11));
         jLabel12.setText("/");
         jLabel12.setName("jLabel12"); // NOI18N
 
-        jLabel13.setFont(new java.awt.Font("Courier New", 1, 11)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Courier New", 1, 11));
         jLabel13.setText(" ");
         jLabel13.setName("jLabel13"); // NOI18N
 
@@ -764,7 +764,9 @@ public class MessageFormApp extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
