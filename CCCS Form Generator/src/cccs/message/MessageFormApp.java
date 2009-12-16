@@ -54,7 +54,7 @@ public class MessageFormApp extends CCCSWindowEventListener {
     public MessageFormApp() {
         super();
         initComponents();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         showCreditorFields(false);
 

@@ -31,7 +31,7 @@ public class FaxFormApp extends CCCSWindowEventListener {
     /** Creates new form FaxFormApp */
     public FaxFormApp() {
         initComponents();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         jTextField1.grabFocus();
 
