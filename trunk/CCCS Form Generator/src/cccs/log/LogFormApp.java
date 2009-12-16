@@ -13,6 +13,7 @@
 package cccs.log;
 import cccs.utility.CalendarUtilities;
 import cccs.*;
+import cccs.utility.CCCSWindowEventListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -23,7 +24,7 @@ import java.io.*;
  *
  * @author George
  */
-public class LogFormApp extends javax.swing.JFrame implements WindowListener, MouseListener{
+public class LogFormApp extends CCCSWindowEventListener implements MouseListener{
     private CalendarGUI calendar_gui = null;
     private TaskLog daily_log = new TaskLog();
     private Calendar calendar;
@@ -176,10 +177,12 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         jLabel4 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -202,8 +205,9 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             }
         });
 
+        jTextField1.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1.setEditable(false);
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18));
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField1.setText("0");
         jTextField1.setName("jTextField1"); // NOI18N
@@ -231,7 +235,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             }
         });
 
-        jButton3.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        jButton3.setFont(new java.awt.Font("SansSerif", 0, 24));
         jButton3.setText("Add");
         jButton3.setName("jButton3"); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -277,7 +281,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
 
         jTextField4.setName("jTextField4"); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel2.setText("Client Number: ");
         jLabel2.setName("jLabel2"); // NOI18N
 
@@ -293,7 +297,7 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12));
         jLabel4.setText("Client Name: ");
         jLabel4.setName("jLabel4"); // NOI18N
 
@@ -301,14 +305,28 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
 
         jMenuBar1.setName("jMenuBar1"); // NOI18N
 
-        jMenu1.setText("Choose Date");
-        jMenu1.setName("jMenu1"); // NOI18N
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
+        jMenu5.setText("File");
+        jMenu5.setName("jMenu5"); // NOI18N
+
+        jMenuItem2.setText("Choose Date");
+        jMenuItem2.setName("jMenuItem2"); // NOI18N
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu1);
+        jMenu5.add(jMenuItem2);
+
+        jMenuItem3.setText("Main Menu");
+        jMenuItem3.setName("jMenuItem3"); // NOI18N
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu5);
 
         jMenu2.setText("Export");
         jMenu2.setName("jMenu2"); // NOI18N
@@ -324,14 +342,9 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Back");
-        jMenu3.setName("jMenu3"); // NOI18N
-        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu3MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu3);
+        jMenu4.setText("Help");
+        jMenu4.setName("jMenu4"); // NOI18N
+        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -422,20 +435,6 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        if(calendar_gui != null){
-            calendar_gui.dispose();
-        }
-
-        calendar_gui = new CalendarGUI();
-
-        calendar_gui.setLocationRelativeTo(this);
-        calendar_gui.setVisible(true);
-
-        calendar_gui.addWindowListener(this);
-        calendar_gui.addMouseListener(this);
-    }//GEN-LAST:event_jMenu1MouseClicked
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(jRadioButton1.isSelected()){
             if(daily_log.calls_in.get() != 0){
@@ -449,13 +448,6 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         }
         loadButtonGroup1();
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-        dispose();
-        FormGeneratorApp main_menu = new FormGeneratorApp();
-        main_menu.setLocationRelativeTo(this);
-        main_menu.setVisible(true);
-    }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         if(jRadioButton1.isSelected()){
@@ -591,6 +583,27 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if(calendar_gui != null){
+            calendar_gui.dispose();
+        }
+
+        calendar_gui = new CalendarGUI();
+
+        calendar_gui.setLocationRelativeTo(this);
+        calendar_gui.setVisible(true);
+
+        calendar_gui.addWindowListener(this);
+        calendar_gui.addMouseListener(this);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        dispose();
+        FormGeneratorApp main_menu = new FormGeneratorApp();
+        main_menu.setLocationRelativeTo(this);
+        main_menu.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -614,11 +627,13 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
@@ -629,25 +644,6 @@ public class LogFormApp extends javax.swing.JFrame implements WindowListener, Mo
     private javax.swing.JTextField jTextField4;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
-
-    public void windowOpened(WindowEvent e) {}
-
-    public void windowClosing(WindowEvent e) {}
-
-    public void windowClosed(WindowEvent e) {
-        Calendar selected = calendar_gui.getCalendar();
-        if(selected != null){
-            loadDate(calendar_gui.getCalendar());
-        }
-    }
-
-    public void windowIconified(WindowEvent e) {}
-
-    public void windowDeiconified(WindowEvent e) {}
-
-    public void windowActivated(WindowEvent e) {}
-
-    public void windowDeactivated(WindowEvent e) {}
 
     public void mouseClicked(MouseEvent e) {
         Calendar selected = calendar_gui.getCalendar();
