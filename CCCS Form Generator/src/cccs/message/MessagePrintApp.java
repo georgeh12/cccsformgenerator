@@ -35,6 +35,7 @@ public class MessagePrintApp extends javax.swing.JFrame {
     }
 
     public void email(ArrayList<Message> messages) {
+        setVisible(false);
         try{
             for(int i = messages.size() - 1; i >= 0; i--){
                 Message message = messages.get(i);

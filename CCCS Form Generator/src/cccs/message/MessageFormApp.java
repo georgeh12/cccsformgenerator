@@ -18,6 +18,7 @@ import cccs.*;
 import javax.swing.*;
 import java.util.*;
 import cccs.message.Message.*;
+import cccs.utility.CCCSWindowEventListener;
 import java.awt.*;
 import java.io.*;
 import java.awt.event.*;
@@ -26,7 +27,7 @@ import java.awt.event.*;
  *
  * @author ghardigg
  */
-public class MessageFormApp extends javax.swing.JFrame {
+public class MessageFormApp extends CCCSWindowEventListener {
     public class MessageListener implements ActionListener{
         private Message message = null;
 
@@ -51,6 +52,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
     /** Creates new form CCCSMessageFormGenerator */
     public MessageFormApp() {
+        super();
         initComponents();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -132,28 +134,6 @@ public class MessageFormApp extends javax.swing.JFrame {
         jTextField5.setVisible(show);
         jLabel5.setVisible(show);
         jTextField6.setVisible(show);
-    }
-
-    private int saveMessagesFirst(){
-        int response = JOptionPane.showOptionDialog(this, "Save all messages before exiting?", "Not so fast...", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
-
-        if(response == JOptionPane.YES_OPTION){
-            String filename = JOptionPane.showInputDialog(this, "Enter a filename", "Save All Messages", JOptionPane.OK_CANCEL_OPTION);
-
-            if(filename != null){
-                if(filename.isEmpty()){
-                    saveFile(CalendarUtilities.getFFDateAndTime());
-                }
-                else{
-                    saveFile(filename);
-                }
-            }
-            else{
-                return JOptionPane.CANCEL_OPTION;
-            }
-        }
-
-        return response;
     }
 
     private int saveMessageFirst(){
@@ -442,6 +422,7 @@ public class MessageFormApp extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
@@ -631,7 +612,7 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jMenuBar1.setName("jMenuBar1"); // NOI18N
 
-        jMenu2.setText("Continue");
+        jMenu2.setText("Save&Clear");
         jMenu2.setName("jMenu2"); // NOI18N
         jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -678,6 +659,15 @@ public class MessageFormApp extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem4);
+
+        jMenuItem10.setText("Main Menu");
+        jMenuItem10.setName("jMenuItem10"); // NOI18N
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem10);
 
         jMenuBar1.add(jMenu4);
 
@@ -735,7 +725,7 @@ public class MessageFormApp extends javax.swing.JFrame {
         });
         jMenu3.add(jMenuItem1);
 
-        jMenuItem2.setText("Load Session");
+        jMenuItem2.setText("Open Session");
         jMenuItem2.setName("jMenuItem2"); // NOI18N
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -746,13 +736,8 @@ public class MessageFormApp extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu3);
 
-        jMenu5.setText("Back");
+        jMenu5.setText("Help");
         jMenu5.setName("jMenu5"); // NOI18N
-        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu5MouseClicked(evt);
-            }
-        });
         jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
@@ -1100,20 +1085,6 @@ public class MessageFormApp extends javax.swing.JFrame {
         loadNewForm();
     }//GEN-LAST:event_jMenu2MouseClicked
 
-    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
-        switch(saveMessagesFirst()){
-            case JOptionPane.CANCEL_OPTION:
-                break;
-            case JOptionPane.YES_OPTION:
-                saveFile(CalendarUtilities.getFFDateAndTime());
-            case JOptionPane.NO_OPTION:
-                dispose();
-                FormGeneratorApp main_menu = new FormGeneratorApp();
-                main_menu.setLocationRelativeTo(this);
-                main_menu.setVisible(true);
-        }
-    }//GEN-LAST:event_jMenu5MouseClicked
-
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
         setAlwaysOnTop(jCheckBoxMenuItem1.isSelected());
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
@@ -1195,6 +1166,14 @@ public class MessageFormApp extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        saveFile(CalendarUtilities.getFFDateAndTime());
+        dispose();
+        FormGeneratorApp main_menu = new FormGeneratorApp();
+        main_menu.setLocationRelativeTo(this);
+        main_menu.setVisible(true);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1235,6 +1214,7 @@ public class MessageFormApp extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

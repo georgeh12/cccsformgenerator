@@ -17,16 +17,16 @@ import cccs.utility.PhoneNumber;
 import cccs.utility.PrintUtilities;
 import cccs.utility.BottomBorder;
 import cccs.*;
+import cccs.utility.CCCSWindowEventListener;
 import javax.swing.*;
 import java.io.*;
 import java.awt.*;
-import java.util.*;
 
 /**
  *
  * @author ghardigg
  */
-public class FaxFormApp extends javax.swing.JFrame {
+public class FaxFormApp extends CCCSWindowEventListener {
 
     /** Creates new form FaxFormApp */
     public FaxFormApp() {
@@ -171,10 +171,12 @@ public class FaxFormApp extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         jTextField6 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CCCS Fax Form");
@@ -232,7 +234,7 @@ public class FaxFormApp extends javax.swing.JFrame {
         jTextField1.setName("jTextField1"); // NOI18N
         jTextField1.setNextFocusableComponent(jTextField3);
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12));
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField2.setText("CCCS of MD & DE");
         jTextField2.setBorder(new BottomBorder(Color.BLACK));
@@ -290,7 +292,7 @@ public class FaxFormApp extends javax.swing.JFrame {
         jTextArea2.setName("jTextArea2"); // NOI18N
         jScrollPane2.setViewportView(jTextArea2);
 
-        jTextField6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextField6.setFont(new java.awt.Font("Tahoma", 0, 12));
         jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField6.setBorder(new BottomBorder(Color.BLACK));
         jTextField6.setName("jTextField6"); // NOI18N
@@ -395,41 +397,50 @@ public class FaxFormApp extends javax.swing.JFrame {
 
         jMenuBar1.setName("jMenuBar1"); // NOI18N
 
-        jMenu1.setText("Print");
+        jMenu2.setText("File");
+        jMenu2.setName("jMenu2"); // NOI18N
+
+        jMenuItem1.setText("Print");
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem2.setText("Save");
+        jMenuItem2.setName("jMenuItem2"); // NOI18N
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem3.setText("Open");
+        jMenuItem3.setName("jMenuItem3"); // NOI18N
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem3);
+
+        jMenuItem4.setText("Main Menu");
+        jMenuItem4.setName("jMenuItem4"); // NOI18N
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu1.setText("Help");
         jMenu1.setName("jMenu1"); // NOI18N
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
-            }
-        });
         jMenuBar1.add(jMenu1);
-
-        jMenu4.setText("Save");
-        jMenu4.setName("jMenu4"); // NOI18N
-        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu4MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu4);
-
-        jMenu5.setText("Open");
-        jMenu5.setName("jMenu5"); // NOI18N
-        jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu5MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu5);
-
-        jMenu3.setText("Back");
-        jMenu3.setName("jMenu3"); // NOI18N
-        jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu3MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -447,19 +458,11 @@ public class FaxFormApp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         print();
-    }//GEN-LAST:event_jMenu1MouseClicked
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-        saveFile("Fax " + CalendarUtilities.getFFDateAndTime());
-        dispose();
-        FormGeneratorApp main_menu = new FormGeneratorApp();
-        main_menu.setLocationRelativeTo(this);
-        main_menu.setVisible(true);
-    }//GEN-LAST:event_jMenu3MouseClicked
-
-    private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         String filename = JOptionPane.showInputDialog(this, "Enter a filename", "Save Fax Form", JOptionPane.OK_CANCEL_OPTION);
 
         if(filename != null){
@@ -470,9 +473,9 @@ public class FaxFormApp extends javax.swing.JFrame {
                 saveFile(filename);
             }
         }
-    }//GEN-LAST:event_jMenu4MouseClicked
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         String filename = "";
         while(true){
             if((filename = JOptionPane.showInputDialog(this, "Enter a filename", "Load Fax Form", JOptionPane.OK_CANCEL_OPTION)) != null){
@@ -486,7 +489,15 @@ public class FaxFormApp extends javax.swing.JFrame {
                 break;
             }
         }
-    }//GEN-LAST:event_jMenu5MouseClicked
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        saveFile("Fax " + CalendarUtilities.getFFDateAndTime());
+        dispose();
+        FormGeneratorApp main_menu = new FormGeneratorApp();
+        main_menu.setLocationRelativeTo(this);
+        main_menu.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
     * @param args the command line arguments
@@ -513,10 +524,12 @@ public class FaxFormApp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
