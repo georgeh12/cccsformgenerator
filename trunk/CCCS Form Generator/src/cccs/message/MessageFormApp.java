@@ -11,17 +11,30 @@
  */
 
 package cccs.message;
+import cccs.FormGeneratorApp;
+import cccs.message.Message.CallFrom;
+import cccs.message.Message.CreditorInfo;
+import cccs.message.Message.Dept;
 import cccs.utility.FileManager;
 import cccs.utility.PhoneNumber;
 import cccs.utility.CalendarUtilities;
-import cccs.*;
-import javax.swing.*;
-import java.util.*;
-import cccs.message.Message.*;
 import cccs.utility.CCCSWindowEventListener;
-import java.awt.*;
-import java.io.*;
-import java.awt.event.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.PriorityQueue;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
 /**
  *
@@ -54,7 +67,7 @@ public class MessageFormApp extends CCCSWindowEventListener {
     public MessageFormApp() {
         super();
         initComponents();
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         showCreditorFields(false);
 

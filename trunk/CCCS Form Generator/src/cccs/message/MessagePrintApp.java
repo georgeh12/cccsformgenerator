@@ -30,20 +30,16 @@ public class MessagePrintApp extends javax.swing.JFrame {
         initComponents();
     }
 
-    private String formatMailto(String s){
-        return s.replace("%", "%25").replace(" ", "%20").replace("\r", "%0D").replace("\n", "%0A").replace(":", "%3A").replace("/", "%2F").replace("-", "%2D").replace(",", "%2C").replace("#", "%23");
-    }
-
     public void email(ArrayList<Message> messages) {
         setVisible(false);
         try{
             for(int i = messages.size() - 1; i >= 0; i--){
                 Message message = messages.get(i);
                 URI email = new URI("mailto:" + MessageFormApp.getTo()
-                        + "?subject=" + formatMailto(printHeader(message))
+                        + "?subject=" + EmailUtilities.formatMailto(printHeader(message))
                         + "&cc=" + MessageFormApp.getCC()
                         + "&bcc=" + MessageFormApp.getBCC()
-                        + "&body=" + formatMailto(printMessage(message))
+                        + "&body=" + EmailUtilities.formatMailto(printMessage(message))
                         );
                 Desktop.getDesktop().mail(email);
 
